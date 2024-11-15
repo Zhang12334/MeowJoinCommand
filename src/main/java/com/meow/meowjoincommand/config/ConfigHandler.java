@@ -74,13 +74,11 @@ public class ConfigHandler {
                 switch (type) {
                     case "permission":
                         if (!player.hasPermission(value)) {
-                            plugin.getLogger().warning("玩家 " + player.getName() + " 没有权限: " + value);
                             return false;
                         }
                         break;
                     case "money":
                         if (!checkMoneyCondition(player, value)) {
-                            plugin.getLogger().warning("玩家 " + player.getName() + " 金钱条件不满足: " + value);
                             return false;
                         }
                         break;

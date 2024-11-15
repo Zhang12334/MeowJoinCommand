@@ -25,7 +25,7 @@ configlist:
       - permission: meowjoincommand.test2  # 权限条件：玩家需要拥有 "meowjoincommand.test2" 权限
     commands:  # 满足条件后的执行指令
       - type: player  # 以玩家身份执行
-        command: say Hellllllo, %player%!  # 玩家执行的指令，%player% 会被替换为玩家名
+        command: say Hello, %player%!  # 玩家执行的指令，%player% 会被替换为玩家名
         tick_delay: 10
       - type: console  # 以服务器身份执行
         command: money give %player% 100  # 服务器执行的指令，%player% 会被替换为玩家名

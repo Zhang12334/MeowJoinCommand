@@ -16,6 +16,9 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        //bstats
+        int pluginId = 23901;
+        Metrics metrics = new Metrics(this, pluginId);
         // 加载配置文件
         saveDefaultConfig();
         configHandler = new ConfigHandler(this);
