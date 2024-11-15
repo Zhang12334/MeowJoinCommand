@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
+import org.bukkit.scheduler.BukkitRunnable;
 import java.util.List;
 import java.util.Map;
 
@@ -137,8 +137,9 @@ public class ConfigHandler {
         for (Map<?, ?> command : commands) {
             String type = null;
             String cmd = null;
+            int tickDelay = 0;  // 默认延迟为0
 
-            // 循环获取每个命令的类型和执行的指令
+            // 循环获取每个命令的类型、执行的指令及延迟
             for (Map.Entry<?, ?> entry : command.entrySet()) {
                 if (entry.getKey().equals("type")) {
                     type = (String) entry.getValue();
@@ -146,26 +147,35 @@ public class ConfigHandler {
                 if (entry.getKey().equals("command")) {
                     cmd = (String) entry.getValue();
                 }
+                if (entry.getKey().equals("tick_delay")) {
+                    tickDelay = (int) entry.getValue();  // 获取延迟tick值
+                }
             }
 
             if (cmd != null) {
                 cmd = cmd.replace("%player%", player.getName()); // 替换 %player% 为玩家名字
             }
 
+            // 执行命令的逻辑，延迟执行
             if (type != null && cmd != null) {
-                switch (type) {
-                    case "player":
-                        // 玩家执行指令
-                        player.performCommand(cmd);
-                        break;
-                    case "console":
-                        // 服务器执行指令
-                        Bukkit.dispatchCommand(console, cmd);
-                        break;
-                    default:
-                        plugin.getLogger().warning("未知的命令类型: " + type);
-                        break;
-                }
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        switch (type) {
+                            case "player":
+                                // 玩家执行指令
+                                player.performCommand(cmd);
+                                break;
+                            case "console":
+                                // 服务器执行指令
+                                Bukkit.dispatchCommand(console, cmd);
+                                break;
+                            default:
+                                plugin.getLogger().warning("未知的命令类型: " + type);
+                                break;
+                        }
+                    }
+                }.runTaskLater(plugin, tickDelay); // 延迟tick执行
             } else {
                 plugin.getLogger().warning("命令配置格式不正确: " + command);
             }
