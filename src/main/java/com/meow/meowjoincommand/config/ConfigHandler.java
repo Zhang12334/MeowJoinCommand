@@ -12,11 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ConfigHandler {
-    public String getLanguage(String key) {
-        // 通过插件实例访问主插件中的 getLanguage 方法
-        return plugin.getLanguage(key);
-    }
-    
+
     private final JavaPlugin plugin;
     private Economy economy;
 
@@ -32,7 +28,7 @@ public class ConfigHandler {
             economy = rsp.getProvider();
             return true;
         }
-        plugin.getLogger().warning(getLanguage("cannotfindvaultMessage"));
+        plugin.getLogger().warning(plugin.getLanguage("cannotfindvaultMessage"));
         return false;
     }
 
@@ -41,9 +37,9 @@ public class ConfigHandler {
         plugin.reloadConfig(); // 重新加载配置文件
         // 重新初始化经济服务
         if (!setupEconomy()) {
-            plugin.getLogger().warning(getLanguage("cannotreloadecoserviceMessage"));
+            plugin.getLogger().warning(plugin.getLanguage("cannotreloadecoserviceMessage"));
         }
-        plugin.getLogger().info(getLanguage("reloadedMessage"));
+        plugin.getLogger().info(plugin.getLanguage("reloadedMessage"));
     }
 
     // 检查并执行配置列表中的配置
@@ -85,11 +81,11 @@ public class ConfigHandler {
                         }
                         break;
                     default:
-                        plugin.getLogger().warning(getLanguage("unknowntypeMessage") + " " + type);
+                        plugin.getLogger().warning(plugin.getLanguage("unknowntypeMessage") + " " + type);
                         return false;
                 }
             } else {
-                plugin.getLogger().warning(getLanguage("executenotcorrectMessage") + " " + condition);
+                plugin.getLogger().warning(plugin.getLanguage("executenotcorrectMessage") + " " + condition);
                 return false;
             }
         }
@@ -144,7 +140,7 @@ public class ConfigHandler {
                 if (tickObj instanceof Integer) {
                     tickDelay = (int) tickObj; // 直接转换为 int
                 } else {
-                    plugin.getLogger().warning(getLanguage("tickdelaynotintMessage") + " " + tickObj);
+                    plugin.getLogger().warning(plugin.getLanguage("tickdelaynotintMessage") + " " + tickObj);
                 }
             }
 
@@ -167,13 +163,13 @@ public class ConfigHandler {
                                     Bukkit.dispatchCommand(console, finalCmd);
                                     break;
                                 default:
-                                    plugin.getLogger().warning(getLanguage("unknowncommandMessage") + type);
+                                    plugin.getLogger().warning(plugin.getLanguage("unknowncommandMessage") + type);
                                     break;
                             }
                         }
                     }.runTaskLater(plugin, tickDelay); // 延迟tick执行
                 } else {
-                    plugin.getLogger().warning(getLanguage("commandnotcorrectMessage") + command);
+                    plugin.getLogger().warning(plugin.getLanguage("commandnotcorrectMessage") + command);
                 }
             }
         }
