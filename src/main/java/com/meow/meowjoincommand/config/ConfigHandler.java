@@ -12,7 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ConfigHandler {
-
+    public String getLanguage(String key) {
+        // 通过插件实例访问主插件中的 getLanguage 方法
+        return plugin.getLanguage(key);
+    }
+    
     private final JavaPlugin plugin;
     private Economy economy;
 
