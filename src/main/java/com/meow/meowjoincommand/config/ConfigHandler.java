@@ -136,8 +136,17 @@ public class ConfigHandler {
         for (Map<?, ?> command : commands) {
             // 使用 final 关键字来解决编译错误
             final String type = (String) command.get("type");
-            final String cmd = (String) command.get("command");
-            final int tickDelay = command.containsKey("tick_delay") ? (int) command.get("tick_delay") : 0;  // 默认延迟为0
+            String cmd = (String) command.get("command"); // 取消 final，允许后续赋值
+            int tickDelay = 0;  // 默认延迟为0
+
+            if (command.containsKey("tick_delay")) {
+                Object tickObj = command.get("tick_delay");
+                if (tickObj instanceof Integer) {
+                    tickDelay = (int) tickObj; // 直接转换为 int
+                } else {
+                    plugin.getLogger().warning("tick_delay 必须是整数，当前值: " + tickObj);
+                }
+            }
 
             if (cmd != null) {
                 cmd = cmd.replace("%player%", player.getName()); // 替换 %player% 为玩家名字
