@@ -32,6 +32,13 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
     private String nowusinglatestversionMessage;
     private String reloadedMessage;
     private String nopermissionMessage;
+    private String cannotfindvaultMessage;
+    private String cannotreloadecoserviceMessage;
+    private String unknowntypeMessage;
+    private String executenotcorrectMessage;
+    private String tickdelaynotintMessage;
+    private String unknowncommandMessage;
+    private String commandnotcorrectMessage;
     @Override
     public void onEnable() {
         //bstats
