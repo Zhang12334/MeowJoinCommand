@@ -144,7 +144,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             // 比较版本号
             if (isVersionGreater(latestVersion, currentVersion)) {
                 // 如果有新版本，则提示新版本
-                getLogger().warning(updateavailableMessage + " " + latestVersion);
+                getLogger().warning(updateavailableMessage + " v" + latestVersion);
                 // 提示下载地址（latest release地址）
                 getLogger().warning(updateurlMessage + " https://github.com/Zhang12334/MeowJoinCommand/releases/latest");
                 getLogger().warning(oldversionmaycauseproblemMessage);
