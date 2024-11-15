@@ -7,6 +7,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.List;
 import java.util.Map;
 
@@ -41,8 +42,6 @@ public class ConfigHandler {
         }
 
         plugin.getLogger().info("MeowJoinCommand 配置已重新加载！");
-
-        // 在此可以添加更多功能的重载，例如：重新加载条件检查、指令执行等
     }
 
     // 检查并执行配置列表中的配置
@@ -148,7 +147,12 @@ public class ConfigHandler {
                     cmd = (String) entry.getValue();
                 }
                 if (entry.getKey().equals("tick_delay")) {
-                    tickDelay = (int) entry.getValue();  // 获取延迟tick值
+                    Object tickObj = entry.getValue();
+                    if (tickObj instanceof Integer) {
+                        tickDelay = (int) tickObj;  // 获取延迟tick值
+                    } else {
+                        plugin.getLogger().warning("tick_delay 必须是整数，当前值: " + tickObj);
+                    }
                 }
             }
 
