@@ -1,0 +1,23 @@
+version: 1.0 #配置文件版本
+enable_plugin: false # 是否启用插件，默认不启用
+configlist: # 配置列表
+    test1: # 配置名
+        enabled: false # 是否启用此配置项
+        execute: # 执行条件
+             - [permission] meowjoincommand.test1 # 权限（当有多个条件时需全部拥有才满足执行条件）
+             - [permission] meowjoincommand.test0 # 权限（当有多个条件时需全部拥有才满足执行条件）
+             - [money] >50 # 金钱（需满足金钱大于50，同时还支持<、<=、>=、==这些判定）
+        commands: # 满足条件后的执行指令
+             - [player] say Hello! # 以玩家身份执行
+             - [console] tell %player%, welcome! # 以服务器身份执行
+    test2: # 配置名
+        enabled: false # 是否启用此配置项
+        execute: # 执行条件
+             - [permission] meowjoincommand.test2 # 权限（只有一个所以只需要满足这一个条件就能执行）
+        commands: # 满足条件后的执行指令
+             - [player] say hellllllllo # 以玩家身份执行
+             - [console] money give %player% 100 # 以服务器身份执行    
+             
+             
+# 执行条件支持permission和money，command支持player及console，分别为玩家及服务器权限执行指令
+# %player% 会被自动替换为玩家名      

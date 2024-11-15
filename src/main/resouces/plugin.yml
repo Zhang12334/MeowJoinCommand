@@ -1,0 +1,5 @@
+name: MeowJoinCommand
+main: com.meow.meowjoincommand.MeowJoinCommand
+version: 1.0
+api-version: 1.16
+description: A plugin that executes commands based on custom conditions.
