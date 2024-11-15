@@ -72,7 +72,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             nowusingversionMessage = "当前使用版本:";
             checkingupdateMessage = "正在检查更新...";
             checkfailedMessage = "检查更新失败，请检查你的网络状况！";
-            updateavailableMessage = "发现新版本：";
+            updateavailableMessage = "发现新版本:";
             updateurlMessage = "新版本下载地址:";
             oldversionmaycauseproblemMessage = "旧版本可能会导致问题，请尽快更新！";
             nowusinglatestversionMessage = "您正在使用最新版本！";
