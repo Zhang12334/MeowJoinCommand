@@ -28,20 +28,17 @@ public class ConfigHandler {
             economy = rsp.getProvider();
             return true;
         }
-        plugin.getLogger().warning("没有找到 Vault 插件或经济服务无法正常工作。");
+        plugin.getLogger().warning(cannotfindvaultMessage);
         return false;
     }
 
     // 重载所有配置
     public void reloadConfig() {
         plugin.reloadConfig(); // 重新加载配置文件
-
         // 重新初始化经济服务
         if (!setupEconomy()) {
-            plugin.getLogger().warning("经济服务无法重载，请确保 Vault 插件存在。");
+            plugin.getLogger().warning(cannotreloadecoserviceMessage);
         }
-
-        plugin.getLogger().info("MeowJoinCommand 配置已重新加载！");
     }
 
     // 检查并执行配置列表中的配置
@@ -83,11 +80,11 @@ public class ConfigHandler {
                         }
                         break;
                     default:
-                        plugin.getLogger().warning("未知的条件类型: " + type);
+                        plugin.getLogger().warning(unknowntypeMessage + " " + type);
                         return false;
                 }
             } else {
-                plugin.getLogger().warning("条件配置格式不正确: " + condition);
+                plugin.getLogger().warning(executenotcorrectMessage + " " + condition);
                 return false;
             }
         }
@@ -142,7 +139,7 @@ public class ConfigHandler {
                 if (tickObj instanceof Integer) {
                     tickDelay = (int) tickObj; // 直接转换为 int
                 } else {
-                    plugin.getLogger().warning("tick_delay 必须是整数，当前值: " + tickObj);
+                    plugin.getLogger().warning(tickdelaynotintMessage + " " + tickObj);
                 }
             }
 
@@ -165,13 +162,13 @@ public class ConfigHandler {
                                     Bukkit.dispatchCommand(console, finalCmd);
                                     break;
                                 default:
-                                    plugin.getLogger().warning("未知的命令类型: " + type);
+                                    plugin.getLogger().warning(unknowncommandMessage + type);
                                     break;
                             }
                         }
                     }.runTaskLater(plugin, tickDelay); // 延迟tick执行
                 } else {
-                    plugin.getLogger().warning("命令配置格式不正确: " + command);
+                    plugin.getLogger().warning(commandnotcorrectMessage + command);
                 }
             }
         }

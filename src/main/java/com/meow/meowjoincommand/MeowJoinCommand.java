@@ -78,6 +78,13 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             nowusinglatestversionMessage = "您正在使用最新版本！";
             reloadedMessage = "配置文件已重载！";
             nopermissionMessage = "你没有权限执行此命令！";
+            cannotfindvaultMessage = "没有找到 Vault 插件或经济服务无法正常工作，将无法使用经济系统相关功能！";
+            cannotreloadecoserviceMessage = "经济服务无法重载，请确保 Vault 插件存在";
+            unknowntypeMessage = "未知的条件类型:";
+            executenotcorrectMessage = "条件配置格式不正确:";
+            tickdelaynotintMessage = "tick_delay 必须是整数，当前值:";
+            unknowncommandMessage = "未知的命令类型:";
+            commandnotcorrectMessage = "命令配置格式不正确:";
         } else {
             // English message
             startupMessage = "MeowJoinCommand has been loaded!";
@@ -92,6 +99,13 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             nowusinglatestversionMessage = "You are using the latest version!";
             reloadedMessage = "Configuration file has been reloaded!";
             nopermissionMessage = "You do not have permission to execute this command!";
+            cannotfindvaultMessage = "Vault plugin not found or the economy service is not working properly, the economy system related functions will not work!";
+            cannotreloadecoserviceMessage = "Economy service cannot be reloaded, please ensure that the Vault plugin exists";
+            unknowntypeMessage = "Unknown condition type:";
+            executenotcorrectMessage = "Condition configuration format is incorrect:";
+            tickdelaynotintMessage = "tick_delay must be an integer, current value:";
+            unknowncommandMessage = "Unknown command type:";
+            commandnotcorrectMessage = "Command configuration format is incorrect:";
         }
     }
 
