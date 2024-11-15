@@ -1,37 +1,72 @@
-version: 1.0  # 配置文件版本
+# 配置文件版本 / Configuration version
+version: 1.0
 
-# 是否启用插件
-enable_plugin: true  # true 表示启用插件，false 表示禁用插件
+# 是否启用插件 / Whether to enable the plugin
+enable_plugin: true
+# true 表示启用插件，false 表示禁用插件
+# enable plugin, true / false
+
+
+# 语言（en或zh_cn）
+# Language, en / zh_cn
+language: zh_cn
 
 # 配置列表
 configlist:
-  test1:  # 配置名称
+  test1:  # 配置名称 / configuration name
     enabled: false  # 启用此配置
-    execute:  # 执行条件
-      - permission: meowjoincommand.test1  # 权限条件：玩家需要拥有 "meowjoincommand.test1" 权限
-      - permission: meowjoincommand.test0  # 权限条件：玩家需要拥有 "meowjoincommand.test0" 权限
-      - money: ">50"  # 金钱条件：玩家金钱大于 50
-    commands:  # 满足条件后的执行指令
-      - type: player  # 以玩家身份执行
-        command: say Hello, %player%!  # 玩家执行的指令，%player% 会被替换为玩家名
-        tick_delay: 5
-      - type: console  # 以服务器身份执行
-        command: tell %player%, Welcome to the server!  # 服务器执行的指令，%player% 会被替换为玩家名
-        tick_delay: 5
+    execute:  # 执行条件 / execute conditions
+      - permission: meowjoincommand.test1  
+          # 权限条件：玩家需要拥有 "meowjoincommand.test1" 权限
+          # permission execution condition: player need to have "meowjoincommand.test1" permission
+      - permission: meowjoincommand.test0
+          # 权限条件：玩家需要拥有 "meowjoincommand.test1" 权限
+          # permission execution condition: player need to have "meowjoincommand.test1" permission
+      - money: ">50"
+          # 金钱条件：玩家金钱大于 50 
+          # money execution condition: player money greater than 50
+    commands:  
+      # 满足条件后的执行指令
+      # commands after execution
+      - type: player  
+          # 以玩家身份执行 
+          # executed as a player
+        command: say Hello, %player%! 
+          # 玩家执行的指令，%player% 会被替换为玩家名 
+          # command executed as a player, %player% will be replaced with player name
+        tick_delay: 5 
+          # 延迟几tick后执行 
+          # executed after delaying for a few ticks
+      - type: console  
+          # 以服务器身份执行 
+          # executed as a server
+        command: tell %player%, Welcome to the server! 
+          # 服务器执行的指令，%player% 会被替换为玩家名 
+          # command executed as a server, %player% will be replaced with player name
+        tick_delay: 5 
+          # 延迟几tick后执行 
+          # executed after delaying for a few ticks
 
-  test2:  # 配置名称
-    enabled: false  # 禁用此配置
-    execute:  # 执行条件
-      - permission: meowjoincommand.test2  # 权限条件：玩家需要拥有 "meowjoincommand.test2" 权限
-    commands:  # 满足条件后的执行指令
-      - type: player  # 以玩家身份执行
-        command: say Hello, %player%!  # 玩家执行的指令，%player% 会被替换为玩家名
+  test2: 
+    enabled: false  
+    execute: 
+      - permission: meowjoincommand.test2 
+    commands: 
+      - type: player 
+        command: say Hello, %player%!  
         tick_delay: 10
-      - type: console  # 以服务器身份执行
-        command: money give %player% 100  # 服务器执行的指令，%player% 会被替换为玩家名
+      - type: console  
+        command: money give %player% 100 
         tick_delay: 10
-
-# 执行条件支持 permission 和 money，money 的判断符号支持>=、>、<=、<、=
+        
+# 简体中文
+# 执行条件支持 permission 和 money，money 的判断符号支持>=、>、<=、<、= / 
 # command type 支持 player 及 console，分别为以玩家及服务器权限执行指令
 # %player% 会被自动替换为玩家名
 # tick_delay 为延迟几tick后执行指令，在TPS为20时一秒可以执行20tick 按照这个加一个tickdelay功能
+
+# English
+# Execution conditions support permission and money, the judgment symbol for money supports >=, >, <=, <, =
+# Command type supports player and console, which means executing commands with player or server permissions
+# %player% will be automatically replaced with the player's name
+# tick_delay is the number of ticks to delay before executing the command, at a TPS of 20, one second can execute 20 ticks

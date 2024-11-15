@@ -18,25 +18,36 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class MeowJoinCommand extends JavaPlugin implements Listener {
 
     private ConfigHandler configHandler;
-
+    // 一堆存储消息的变量
+    private String startupMessage;
+    private String shutdownMessage;
+    private String notenableMessage;
+    private String nowusingversionMessage;
+    private String checkingupdateMessage;
+    private String checkfailedMessage;
+    private String updateavailableMessage;
+    private String updateurlMessage;
+    private String oldversionmaycauseproblemMessage;
+    private String nowusinglatestversionMessage;
     @Override
     public void onEnable() {
         //bstats
         int pluginId = 23901;
         Metrics metrics = new Metrics(this, pluginId);
+        loadLanguage(); // 加载语言配置
         // 加载配置文件
         saveDefaultConfig();
         configHandler = new ConfigHandler(this);
 
         if (getConfig().getBoolean("enable_plugin")) {
             getServer().getPluginManager().registerEvents(this, this);
-            getLogger().info(ChatColor.GREEN + "MeowJoinCommand 已启用!");
+            getLogger().info(ChatColor.GREEN + startupMessage);
         } else {
-            getLogger().info(ChatColor.RED + "MeowJoinCommand 已成功加载但尚未启用，请在配置文件中启用插件。");
+            getLogger().info(ChatColor.RED + notenableMessage);
         }
         String currentVersion = getDescription().getVersion();
-        getLogger().info("当前使用版本：" + currentVersion);
-        getLogger().info("正在检查更新");
+        getLogger().info(nowusingversionMessage + currentVersion);
+        getLogger().info(checkingupdateMessage);
         // 异步更新检查
         new BukkitRunnable() {
             @Override
@@ -45,6 +56,38 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             }
         }.runTaskAsynchronously(this);
     }
+
+    private void loadLanguage() {
+        FileConfiguration config = getConfig();
+        String language = config.getString("language", "zh_cn");
+
+        if ("zh_cn".equalsIgnoreCase(language)) {
+            // 中文消息
+            startupMessage = "MeowJoinCommand 已加载！";
+            shutdownMessage = "MeowJoinCommand 已关闭！";
+            notenableMessage = "插件未启用，请前往配置文件中设置！";
+            nowusingversionMessage = "当前使用版本：";
+            checkingupdateMessage = "正在检查更新...";
+            checkfailedMessage = "检查更新失败，请检查你的网络状况！";
+            updateavailableMessage = "有新的版本可用！";
+            updateurlMessage = "下载更新地址：";
+            oldversionmaycauseproblemMessage = "旧版本可能会导致问题！";
+            nowusinglatestversionMessage = "您正在使用最新版本！";
+        } else {
+            // English message
+            startupMessage = "MeowJoinCommand has been loaded!";
+            shutdownMessage = "MeowJoinCommand has been shut down!";
+            notenableMessage = "Plugin not enabled, please set it in the configuration file!";
+            nowusingversionMessage = "Currently using version:";
+            checkingupdateMessage = "Checking for updates...";
+            checkfailedMessage = "Update check failed, please check your network!";
+            updateavailableMessage = "A new version is available!";
+            updateurlMessage = "Download update at:";
+            oldversionmaycauseproblemMessage = "Old versions may cause problems!";
+            nowusinglatestversionMessage = "You are using the latest version!";
+        }
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> suggestions = new ArrayList<>();
