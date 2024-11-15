@@ -3,6 +3,8 @@ package com.meow.meowjoincommand;
 import com.meow.meowjoincommand.config.ConfigHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,5 +39,24 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         getLogger().info("MeowJoinCommand 已禁用!");
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("meowjoincommand")) {
+            if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+                // 检查是否是具有权限的用户
+                if (sender.hasPermission("meowjoincommand.reload")) {
+                    reloadConfig();
+                    configHandler.reload(); // 重新加载 ConfigHandler
+                    sender.sendMessage(ChatColor.GREEN + "插件配置已重新加载。");
+                    getLogger().info(ChatColor.GREEN + "插件配置已重新加载！");
+                } else {
+                    sender.sendMessage(ChatColor.RED + "你没有权限执行此命令！");
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }

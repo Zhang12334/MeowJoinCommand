@@ -1,5 +1,15 @@
 name: MeowJoinCommand
-main: com.meow.meowjoincommand.MeowJoinCommand
 version: 1.0
-api-version: 1.16
-description: A plugin that executes commands based on custom conditions.
+main: com.meow.meowjoincommand.MeowJoinCommand
+commands:
+  meowjoincommand:
+    description: 主插件命令
+    usage: /<command> reload
+    subcommands:
+      reload:
+        description: 重新加载插件配置
+        usage: /meowjoincommand reload
+permissions:
+  meowjoincommand.reload:
+    description: 允许重载配置文件
+    default: op
