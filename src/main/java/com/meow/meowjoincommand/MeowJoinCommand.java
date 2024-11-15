@@ -217,10 +217,9 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
                 // 检查是否是具有权限的用户
                 if (sender.hasPermission("meowjoincommand.reload")) {
                     reloadConfig();
-                    configHandler.reloadConfig();  // 热加载配置
                     loadLanguage(); // 加载语言配置
+                    configHandler.reloadConfig();  // 热加载配置
                     sender.sendMessage(ChatColor.GREEN + reloadedMessage);
-                    getLogger().info(reloadedMessage);
                 } else {
                     sender.sendMessage(ChatColor.RED + nopermissionMessage);
                 }

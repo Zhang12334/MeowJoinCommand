@@ -39,6 +39,7 @@ public class ConfigHandler {
         if (!setupEconomy()) {
             plugin.getLogger().warning(cannotreloadecoserviceMessage);
         }
+        getLogger().info(reloadedMessage);
     }
 
     // 检查并执行配置列表中的配置
