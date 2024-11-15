@@ -75,11 +75,13 @@ public class ConfigHandler {
                 switch (type) {
                     case "permission":
                         if (!player.hasPermission(value)) {
+                            plugin.getLogger().warning("玩家 " + player.getName() + " 没有权限: " + value);
                             return false;
                         }
                         break;
                     case "money":
                         if (!checkMoneyCondition(player, value)) {
+                            plugin.getLogger().warning("玩家 " + player.getName() + " 金钱条件不满足: " + value);
                             return false;
                         }
                         break;
@@ -136,31 +138,36 @@ public class ConfigHandler {
             String type = null;
             String cmd = null;
 
-            // 获取命令类型和命令内容
+            // 循环获取每个命令的类型和执行的指令
             for (Map.Entry<?, ?> entry : command.entrySet()) {
-                type = (String) entry.getKey();
-                cmd = (String) entry.getValue();
+                if (entry.getKey().equals("type")) {
+                    type = (String) entry.getValue();
+                }
+                if (entry.getKey().equals("command")) {
+                    cmd = (String) entry.getValue();
+                }
             }
 
             if (cmd != null) {
-                cmd = cmd.replace("%player%", player.getName()); // 替换 %player% 为玩家的名字
+                cmd = cmd.replace("%player%", player.getName()); // 替换 %player% 为玩家名字
             }
 
-            // 执行命令
             if (type != null && cmd != null) {
                 switch (type) {
                     case "player":
-                        player.performCommand(cmd); // 玩家执行的命令
+                        // 玩家执行指令
+                        player.performCommand(cmd);
                         break;
                     case "console":
-                        Bukkit.dispatchCommand(console, cmd); // 服务器执行的命令
+                        // 服务器执行指令
+                        Bukkit.dispatchCommand(console, cmd);
                         break;
                     default:
-                        plugin.getLogger().warning("未知的命令类型: " + type);  // 打印警告，帮助调试
+                        plugin.getLogger().warning("未知的命令类型: " + type);
                         break;
                 }
             } else {
-                plugin.getLogger().warning("命令配置格式不正确: " + command);  // 打印警告，帮助调试
+                plugin.getLogger().warning("命令配置格式不正确: " + command);
             }
         }
     }
