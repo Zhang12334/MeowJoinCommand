@@ -134,27 +134,10 @@ public class ConfigHandler {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
         for (Map<?, ?> command : commands) {
-            String type = null;
-            String cmd = null;
-            int tickDelay = 0;  // 默认延迟为0
-
-            // 循环获取每个命令的类型、执行的指令及延迟
-            for (Map.Entry<?, ?> entry : command.entrySet()) {
-                if (entry.getKey().equals("type")) {
-                    type = (String) entry.getValue();
-                }
-                if (entry.getKey().equals("command")) {
-                    cmd = (String) entry.getValue();
-                }
-                if (entry.getKey().equals("tick_delay")) {
-                    Object tickObj = entry.getValue();
-                    if (tickObj instanceof Integer) {
-                        tickDelay = (int) tickObj;  // 获取延迟tick值
-                    } else {
-                        plugin.getLogger().warning("tick_delay 必须是整数，当前值: " + tickObj);
-                    }
-                }
-            }
+            // 使用 final 关键字来解决编译错误
+            final String type = (String) command.get("type");
+            final String cmd = (String) command.get("command");
+            final int tickDelay = command.containsKey("tick_delay") ? (int) command.get("tick_delay") : 0;  // 默认延迟为0
 
             if (cmd != null) {
                 cmd = cmd.replace("%player%", player.getName()); // 替换 %player% 为玩家名字
