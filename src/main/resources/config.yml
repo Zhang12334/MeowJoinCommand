@@ -1,23 +1,31 @@
-version: 1.0 #配置文件版本
-enable_plugin: false # 是否启用插件，默认不启用
-configlist: # 配置列表
-    test1: # 配置名
-        enabled: false # 是否启用此配置项
-        execute: # 执行条件
-             - [permission] meowjoincommand.test1 # 权限（当有多个条件时需全部拥有才满足执行条件）
-             - [permission] meowjoincommand.test0 # 权限（当有多个条件时需全部拥有才满足执行条件）
-             - [money] >50 # 金钱（需满足金钱大于50，同时还支持<、<=、>=、==这些判定）
-        commands: # 满足条件后的执行指令
-             - [player] say Hello! # 以玩家身份执行
-             - [console] tell %player%, welcome! # 以服务器身份执行
-    test2: # 配置名
-        enabled: false # 是否启用此配置项
-        execute: # 执行条件
-             - [permission] meowjoincommand.test2 # 权限（只有一个所以只需要满足这一个条件就能执行）
-        commands: # 满足条件后的执行指令
-             - [player] say hellllllllo # 以玩家身份执行
-             - [console] money give %player% 100 # 以服务器身份执行    
-             
-             
-# 执行条件支持permission和money，command支持player及console，分别为玩家及服务器权限执行指令
-# %player% 会被自动替换为玩家名      
+version: 1.0  # 配置文件版本
+enable_plugin: false  # 是否启用插件，默认不启用
+
+configlist:  # 配置列表
+  test1:  # 配置名
+    enabled: false  # 是否启用此配置项，设置为 true 则启用此配置
+    execute:  # 执行条件
+      - permission: meowjoincommand.test1  # 权限条件：玩家需要拥有 meowjoincommand.test1 权限
+      - permission: meowjoincommand.test0  # 权限条件：玩家需要拥有 meowjoincommand.test0 权限
+      - money: ">50"  # 金钱条件：玩家金钱大于 50（支持 >, <, >=, <=, == 等符号）
+    commands:  # 满足条件后的执行指令
+      - type: player  # 以玩家身份执行
+        command: say Hello!  # 玩家执行的指令
+      - type: console  # 以服务器身份执行
+        command: tell %player%, welcome!  # 服务器执行的指令，%player% 会被替换为玩家名
+
+  test2:  # 配置名
+    enabled: false  # 是否启用此配置项，设置为 true 则启用此配置
+    execute:  # 执行条件
+      - permission: meowjoincommand.test2  # 权限条件：玩家需要拥有 meowjoincommand.test2 权限
+    commands:  # 满足条件后的执行指令
+      - type: player  # 以玩家身份执行
+        command: say hellllllllo  # 玩家执行的指令
+      - type: console  # 以服务器身份执行
+        command: money give %player% 100  # 服务器执行的指令，%player% 会被替换为玩家名
+
+# 说明：
+# - "permission" 条件用于判断玩家是否拥有指定权限
+# - "money" 条件用于判断玩家的金钱（支持多种比较运算符，如 >、<、>=、<=、==）
+# - "type" 指定执行指令的角色，"player" 为玩家，"console" 为服务器
+# - "%player%" 会被自动替换为当前玩家的名字
