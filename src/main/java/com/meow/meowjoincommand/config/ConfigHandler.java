@@ -136,29 +136,31 @@ public class ConfigHandler {
             String type = null;
             String cmd = null;
 
+            // 获取命令类型和命令内容
             for (Map.Entry<?, ?> entry : command.entrySet()) {
                 type = (String) entry.getKey();
                 cmd = (String) entry.getValue();
             }
 
             if (cmd != null) {
-                cmd = cmd.replace("%player%", player.getName());
+                cmd = cmd.replace("%player%", player.getName()); // 替换 %player% 为玩家的名字
             }
 
+            // 执行命令
             if (type != null && cmd != null) {
                 switch (type) {
                     case "player":
-                        player.performCommand(cmd);
+                        player.performCommand(cmd); // 玩家执行的命令
                         break;
                     case "console":
-                        Bukkit.dispatchCommand(console, cmd);
+                        Bukkit.dispatchCommand(console, cmd); // 服务器执行的命令
                         break;
                     default:
-                        plugin.getLogger().warning("未知的命令类型: " + type);
+                        plugin.getLogger().warning("未知的命令类型: " + type);  // 打印警告，帮助调试
                         break;
                 }
             } else {
-                plugin.getLogger().warning("命令配置格式不正确: " + command);
+                plugin.getLogger().warning("命令配置格式不正确: " + command);  // 打印警告，帮助调试
             }
         }
     }
