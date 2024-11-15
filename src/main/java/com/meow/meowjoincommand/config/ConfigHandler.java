@@ -1,22 +1,10 @@
-package com.meow.meowjoincommand.config;
-
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
-import java.util.Map;
-
 public class ConfigHandler {
 
-    private final JavaPlugin plugin;
+    private final MeowJoinCommandPlugin plugin;  // 使用 MeowJoinCommandPlugin 类型
     private Economy economy;
 
-    public ConfigHandler(JavaPlugin plugin) {
+    // 使用 MeowJoinCommandPlugin 类型的构造函数
+    public ConfigHandler(MeowJoinCommandPlugin plugin) {
         this.plugin = plugin;
         setupEconomy(); // 初始化时尝试加载经济服务
     }
@@ -130,25 +118,22 @@ public class ConfigHandler {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
         for (Map<?, ?> command : commands) {
-            // 将 type 和 cmd 声明为 final
             final String type = (String) command.get("type");
-            final String cmd = (String) command.get("command"); // 声明为 final，避免编译错误
-            int tickDelay = 0;  // 默认延迟为0
+            final String cmd = (String) command.get("command");
+            int tickDelay = 0;
 
             if (command.containsKey("tick_delay")) {
                 Object tickObj = command.get("tick_delay");
                 if (tickObj instanceof Integer) {
-                    tickDelay = (int) tickObj; // 直接转换为 int
+                    tickDelay = (int) tickObj;
                 } else {
                     plugin.getLogger().warning(plugin.getLanguage("tickdelaynotintMessage") + " " + tickObj);
                 }
             }
 
             if (cmd != null) {
-                // 替换 %player% 为玩家名字
                 final String finalCmd = cmd.replace("%player%", player.getName());
 
-                // 执行命令的逻辑，延迟执行
                 if (type != null && finalCmd != null) {
                     new BukkitRunnable() {
                         @Override
