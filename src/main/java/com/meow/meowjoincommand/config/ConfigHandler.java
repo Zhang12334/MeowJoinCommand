@@ -1,10 +1,22 @@
+package com.meow.meowjoincommand.config;
+
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
+import java.util.Map;
+
 public class ConfigHandler {
 
-    private final MeowJoinCommandPlugin plugin;  // 使用 MeowJoinCommandPlugin 类型
+    private final JavaPlugin plugin;
     private Economy economy;
 
-    // 使用 MeowJoinCommandPlugin 类型的构造函数
-    public ConfigHandler(MeowJoinCommandPlugin plugin) {
+    public ConfigHandler(JavaPlugin plugin) {
         this.plugin = plugin;
         setupEconomy(); // 初始化时尝试加载经济服务
     }
@@ -16,18 +28,20 @@ public class ConfigHandler {
             economy = rsp.getProvider();
             return true;
         }
-        plugin.getLogger().warning(plugin.getLanguage("cannotfindvaultMessage"));
+        plugin.getLogger().warning("[Chinese] 没有找到 Vault 插件或经济服务无法正常工作，将无法使用经济系统相关功能！");
+        plugin.getLogger().warning("[English] Vault plugin not found or the economy service is not working properly, the economy system related functions will not work!");
         return false;
     }
 
     // 重载所有配置
     public void reloadConfig() {
         plugin.reloadConfig(); // 重新加载配置文件
+
         // 重新初始化经济服务
         if (!setupEconomy()) {
-            plugin.getLogger().warning(plugin.getLanguage("cannotreloadecoserviceMessage"));
+            plugin.getLogger().warning("[Chinese] 经济服务无法重载，请确保 Vault 插件存在");
+            plugin.getLogger().warning("[English] Economy service cannot be reloaded, please ensure that the Vault plugin exists");
         }
-        plugin.getLogger().info(plugin.getLanguage("reloadedMessage"));
     }
 
     // 检查并执行配置列表中的配置
@@ -69,11 +83,13 @@ public class ConfigHandler {
                         }
                         break;
                     default:
-                        plugin.getLogger().warning(plugin.getLanguage("unknowntypeMessage") + " " + type);
+                        plugin.getLogger().warning("[Chinese] 未知的条件类型: " + type);
+                        plugin.getLogger().warning("[English] Unknown condition type: " + type);
                         return false;
                 }
             } else {
-                plugin.getLogger().warning(plugin.getLanguage("executenotcorrectMessage") + " " + condition);
+                plugin.getLogger().warning("[Chinese] 条件配置格式不正确: " + condition);
+                plugin.getLogger().warning("[English] Condition configuration format is incorrect: " + condition);
                 return false;
             }
         }
@@ -118,22 +134,26 @@ public class ConfigHandler {
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
         for (Map<?, ?> command : commands) {
+            // 将 type 和 cmd 声明为 final
             final String type = (String) command.get("type");
-            final String cmd = (String) command.get("command");
-            int tickDelay = 0;
+            final String cmd = (String) command.get("command"); // 声明为 final，避免编译错误
+            int tickDelay = 0;  // 默认延迟为0
 
             if (command.containsKey("tick_delay")) {
                 Object tickObj = command.get("tick_delay");
                 if (tickObj instanceof Integer) {
-                    tickDelay = (int) tickObj;
+                    tickDelay = (int) tickObj; // 直接转换为 int
                 } else {
-                    plugin.getLogger().warning(plugin.getLanguage("tickdelaynotintMessage") + " " + tickObj);
+                    plugin.getLogger().warning("[Chinese] tick_delay 必须是整数，当前值: " + tickObj);
+                    plugin.getLogger().warning("[English] tick_delay must be an integer, current value: " + tickObj);
                 }
             }
 
             if (cmd != null) {
+                // 替换 %player% 为玩家名字
                 final String finalCmd = cmd.replace("%player%", player.getName());
 
+                // 执行命令的逻辑，延迟执行
                 if (type != null && finalCmd != null) {
                     new BukkitRunnable() {
                         @Override
@@ -148,13 +168,15 @@ public class ConfigHandler {
                                     Bukkit.dispatchCommand(console, finalCmd);
                                     break;
                                 default:
-                                    plugin.getLogger().warning(plugin.getLanguage("unknowncommandMessage") + type);
+                                    plugin.getLogger().warning("[Chinese] 未知的命令类型: " + type);
+                                    plugin.getLogger().warning("[English] Unknown command type: " + type);
                                     break;
                             }
                         }
                     }.runTaskLater(plugin, tickDelay); // 延迟tick执行
                 } else {
-                    plugin.getLogger().warning(plugin.getLanguage("commandnotcorrectMessage") + command);
+                    plugin.getLogger().warning("[Chinese] 命令配置格式不正确: " + command);
+                    plugin.getLogger().warning("[English] Command configuration format is incorrect: " + command);
                 }
             }
         }
