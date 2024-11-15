@@ -30,6 +30,8 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
     private String updateurlMessage;
     private String oldversionmaycauseproblemMessage;
     private String nowusinglatestversionMessage;
+    private String reloadedMessage;
+    private String nopermissionMessage;
     @Override
     public void onEnable() {
         //bstats
@@ -74,6 +76,8 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             updateurlMessage = "下载更新地址：";
             oldversionmaycauseproblemMessage = "旧版本可能会导致问题！";
             nowusinglatestversionMessage = "您正在使用最新版本！";
+            reloadedMessage = "配置文件已重载！";
+            nopermissionMessage = "你没有权限执行此命令！";
         } else {
             // English message
             startupMessage = "MeowJoinCommand has been loaded!";
@@ -86,6 +90,8 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             updateurlMessage = "Download update at:";
             oldversionmaycauseproblemMessage = "Old versions may cause problems!";
             nowusinglatestversionMessage = "You are using the latest version!";
+            reloadedMessage = "Configuration file has been reloaded!";
+            nopermissionMessage = "You do not have permission to execute this command!";
         }
     }
 
@@ -187,7 +193,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        getLogger().info("MeowJoinCommand 已禁用!");
+        getLogger().info(shutdownMessage);
     }
 
     @Override
@@ -198,10 +204,10 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
                 if (sender.hasPermission("meowjoincommand.reload")) {
                     reloadConfig();
                     configHandler.reloadConfig();  // 热加载配置
-                    sender.sendMessage(ChatColor.GREEN + "插件配置已重新加载。");
-                    getLogger().info(ChatColor.GREEN + "插件配置已重新加载！");
+                    sender.sendMessage(ChatColor.GREEN + reloadedMessage);
+                    getLogger().info(ChatColor.GREEN + reloadedMessage);
                 } else {
-                    sender.sendMessage(ChatColor.RED + "你没有权限执行此命令！");
+                    sender.sendMessage(ChatColor.RED + nopermissionMessage);
                 }
                 return true;
             }
