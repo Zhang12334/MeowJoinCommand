@@ -20,8 +20,8 @@ configlist:
           # 权限条件：玩家需要拥有 "meowjoincommand.test1" 权限
           # permission execution condition: player need to have "meowjoincommand.test1" permission
       - permission: meowjoincommand.test0
-          # 权限条件：玩家需要拥有 "meowjoincommand.test1" 权限
-          # permission execution condition: player need to have "meowjoincommand.test1" permission
+          # 权限条件：玩家需要拥有 "meowjoincommand.test0" 权限
+          # permission execution condition: player need to have "meowjoincommand.test0" permission
       - money: ">50"
           # 金钱条件：玩家金钱大于 50 
           # money execution condition: player money greater than 50
@@ -64,9 +64,12 @@ configlist:
 # command type 支持 player 及 console，分别为以玩家及服务器权限执行指令
 # %player% 会被自动替换为玩家名
 # tick_delay 为延迟几tick后执行指令，在TPS为20时一秒可以执行20tick 按照这个加一个tickdelay功能
+# 如果执行条件中存在多项要求，则需全部满足才会执行指令
 
 # English
 # Execution conditions support permission and money, the judgment symbol for money supports >=, >, <=, <, =
 # Command type supports player and console, which means executing commands with player or server permissions
 # %player% will be automatically replaced with the player's name
 # tick_delay is the number of ticks to delay before executing the command, at a TPS of 20, one second can execute 20 ticks
+# If there are multiple requirements in the execution conditions, they must all be satisfied before the command is executed
+# Configuration file English content is translated by TONGYI Lingma
