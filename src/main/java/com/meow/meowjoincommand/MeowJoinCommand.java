@@ -49,7 +49,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             getLogger().warning(notenableMessage);
         }
         String currentVersion = getDescription().getVersion();
-        getLogger().info(nowusingversionMessage + currentVersion);
+        getLogger().info(nowusingversionMessage + "v" + currentVersion);
         getLogger().info(checkingupdateMessage);
         // 异步更新检查
         new BukkitRunnable() {
@@ -69,12 +69,12 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             startupMessage = "MeowJoinCommand 已加载！";
             shutdownMessage = "MeowJoinCommand 已卸载！";
             notenableMessage = "插件未启用，请前往配置文件中设置！";
-            nowusingversionMessage = "当前使用版本：";
+            nowusingversionMessage = "当前插件版本：";
             checkingupdateMessage = "正在检查更新...";
             checkfailedMessage = "检查更新失败，请检查你的网络状况！";
-            updateavailableMessage = "有新的版本可用！";
+            updateavailableMessage = "有新的版本可用：";
             updateurlMessage = "下载更新地址：";
-            oldversionmaycauseproblemMessage = "旧版本可能会导致问题！";
+            oldversionmaycauseproblemMessage = "旧版本可能会导致问题，请尽快更新！";
             nowusinglatestversionMessage = "您正在使用最新版本！";
             reloadedMessage = "配置文件已重载！";
             nopermissionMessage = "你没有权限执行此命令！";
@@ -86,7 +86,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             nowusingversionMessage = "Currently using version:";
             checkingupdateMessage = "Checking for updates...";
             checkfailedMessage = "Update check failed, please check your network!";
-            updateavailableMessage = "A new version is available!";
+            updateavailableMessage = "A new version is available: ";
             updateurlMessage = "Download update at:";
             oldversionmaycauseproblemMessage = "Old versions may cause problems!";
             nowusinglatestversionMessage = "You are using the latest version!";
