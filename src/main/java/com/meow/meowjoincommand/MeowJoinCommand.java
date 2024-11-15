@@ -38,6 +38,11 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
         int pluginId = 23901;
         Metrics metrics = new Metrics(this, pluginId);
         loadLanguage(); // 加载语言配置
+        // 首次加载进行英文提示
+        File configFile = new File(getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            getLogger().warning("[English] The default language is Simplified Chinese. If you need English, you can configure it in the config.yml.");
+        }
         // 加载配置文件
         saveDefaultConfig();
         configHandler = new ConfigHandler(this);
