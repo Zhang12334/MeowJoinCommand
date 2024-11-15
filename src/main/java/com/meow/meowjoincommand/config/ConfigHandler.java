@@ -75,21 +75,23 @@ public class ConfigHandler {
     private boolean checkMoneyCondition(Player player, String condition) {
         // 获取玩家的金钱余额
         double playerMoney = getPlayerMoney(player);
-        char operator = condition.charAt(0);
-        double value = Double.parseDouble(condition.substring(1));
+        
+        // 处理条件字符串，支持 >=, <=, >, <, =, != 等操作符
+        String operator = condition.replaceAll("[^><=!]", "").trim(); // 获取操作符
+        double value = Double.parseDouble(condition.replaceAll("[^0-9.-]", "").trim()); // 获取数值部分
 
         switch (operator) {
-            case '>':
+            case ">":
                 return playerMoney > value;
-            case '<':
+            case "<":
                 return playerMoney < value;
-            case '=':
+            case "=":
                 return playerMoney == value;
-            case '!':
+            case "!":
                 return playerMoney != value;
-            case '>=':
+            case ">=":
                 return playerMoney >= value;
-            case '<=':
+            case "<=":
                 return playerMoney <= value;
             default:
                 return false;
