@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ArrayList;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.configuration.file.FileConfiguration;
+import java.io.File;
 
 public class MeowJoinCommand extends JavaPlugin implements Listener {
 
@@ -41,7 +42,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
         // 首次加载进行英文提示
         File configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {
-            getLogger().warning("[English] The default language is Simplified Chinese. If you need English, you can configure it in the config.yml.");
+            getLogger().warning("The default language is Simplified Chinese. If you need English, you can configure it in the config.yml.");
         }
         // 加载配置文件
         saveDefaultConfig();
