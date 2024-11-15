@@ -44,7 +44,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             getServer().getPluginManager().registerEvents(this, this);
             getLogger().info(startupMessage);
         } else {
-            getLogger().info(notenableMessage);
+            getLogger().warning(notenableMessage);
         }
         String currentVersion = getDescription().getVersion();
         getLogger().info(nowusingversionMessage + currentVersion);
