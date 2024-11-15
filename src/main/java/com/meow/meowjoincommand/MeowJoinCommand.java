@@ -69,10 +69,10 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             startupMessage = "MeowJoinCommand 已加载！";
             shutdownMessage = "MeowJoinCommand 已卸载！";
             notenableMessage = "插件未启用，请前往配置文件中设置！";
-            nowusingversionMessage = "当前插件版本:";
+            nowusingversionMessage = "当前使用版本:";
             checkingupdateMessage = "正在检查更新...";
             checkfailedMessage = "检查更新失败，请检查你的网络状况！";
-            updateavailableMessage = "有新的版本可用：";
+            updateavailableMessage = "发现新版本：";
             updateurlMessage = "新版本下载地址:";
             oldversionmaycauseproblemMessage = "旧版本可能会导致问题，请尽快更新！";
             nowusinglatestversionMessage = "您正在使用最新版本！";
