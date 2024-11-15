@@ -109,7 +109,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             //最后使用源地址
         };
         // 获取 github release 最新版本号作为最新版本
-        // 仓库地址：https://github.com/Zhang12334/WhiteList-ID
+        // 仓库地址：https://github.com/Zhang12334/MeowJoinCommand
         String latestVersionUrl = "https://github.com/Zhang12334/MeowJoinCommand/releases/latest";
         // 获取版本号
         try {
@@ -140,7 +140,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
                 // 如果有新版本，则提示新版本
                 getLogger().warning(updateavailableMessage + " " + latestVersion);
                 // 提示下载地址（latest release地址）
-                getLogger().warning(updateurlMessage + " https://github.com/Zhang12334/WhiteList-ID/releases/latest");
+                getLogger().warning(updateurlMessage + " https://github.com/Zhang12334/MeowJoinCommand/releases/latest");
                 getLogger().warning(oldversionmaycauseproblemMessage);
             } else {
                 getLogger().info(nowusinglatestversionMessage);
