@@ -67,7 +67,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
         if ("zh_cn".equalsIgnoreCase(language)) {
             // 中文消息
             startupMessage = "MeowJoinCommand 已加载！";
-            shutdownMessage = "MeowJoinCommand 已关闭！";
+            shutdownMessage = "MeowJoinCommand 已卸载！";
             notenableMessage = "插件未启用，请前往配置文件中设置！";
             nowusingversionMessage = "当前使用版本：";
             checkingupdateMessage = "正在检查更新...";
@@ -81,7 +81,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
         } else {
             // English message
             startupMessage = "MeowJoinCommand has been loaded!";
-            shutdownMessage = "MeowJoinCommand has been shut down!";
+            shutdownMessage = "MeowJoinCommand has been disabled!";
             notenableMessage = "Plugin not enabled, please set it in the configuration file!";
             nowusingversionMessage = "Currently using version:";
             checkingupdateMessage = "Checking for updates...";
