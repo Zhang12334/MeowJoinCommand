@@ -17,11 +17,7 @@ public class ConfigHandler {
 
     public ConfigHandler(JavaPlugin plugin) {
         this.plugin = plugin;
-
-        // 尝试获取 Vault 经济服务
-        if (!setupEconomy()) {
-            plugin.getLogger().warning("没有找到 Vault 插件或经济服务无法正常工作。");
-        }
+        setupEconomy(); // 初始化时尝试加载经济服务
     }
 
     // 初始化 Vault 经济接口
@@ -29,10 +25,27 @@ public class ConfigHandler {
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp != null) {
             economy = rsp.getProvider();
+            return true;
         }
-        return economy != null;
+        plugin.getLogger().warning("没有找到 Vault 插件或经济服务无法正常工作。");
+        return false;
     }
 
+    // 重载所有配置
+    public void reloadConfig() {
+        plugin.reloadConfig(); // 重新加载配置文件
+
+        // 重新初始化经济服务
+        if (!setupEconomy()) {
+            plugin.getLogger().warning("经济服务无法重载，请确保 Vault 插件存在。");
+        }
+
+        plugin.getLogger().info("MeowJoinCommand 配置已重新加载！");
+
+        // 在此可以添加更多功能的重载，例如：重新加载条件检查、指令执行等
+    }
+
+    // 检查并执行配置列表中的配置
     public void checkAndExecuteConfigs(Player player) {
         Map<String, Object> configList = plugin.getConfig().getConfigurationSection("configlist").getValues(false);
 
@@ -45,11 +58,11 @@ public class ConfigHandler {
         }
     }
 
+    // 检查条件
     private boolean checkConditions(Player player, String path) {
         List<Map<?, ?>> conditions = plugin.getConfig().getMapList(path);
 
         for (Map<?, ?> condition : conditions) {
-            // 获取条件中的键和值
             String type = null;
             String value = null;
 
@@ -58,7 +71,6 @@ public class ConfigHandler {
                 value = (String) entry.getValue();
             }
 
-            // 处理条件
             if (type != null && value != null) {
                 switch (type) {
                     case "permission":
@@ -83,13 +95,11 @@ public class ConfigHandler {
         return true;
     }
 
+    // 检查金钱条件
     private boolean checkMoneyCondition(Player player, String condition) {
-        // 获取玩家的金钱余额
         double playerMoney = getPlayerMoney(player);
-
-        // 处理条件字符串，支持 >=, <=, >, <, =, != 等操作符
-        String operator = condition.replaceAll("[^><=!]", "").trim(); // 获取操作符
-        double value = Double.parseDouble(condition.replaceAll("[^0-9.-]", "").trim()); // 获取数值部分
+        String operator = condition.replaceAll("[^><=!]", "").trim();
+        double value = Double.parseDouble(condition.replaceAll("[^0-9.-]", "").trim());
 
         switch (operator) {
             case ">":
@@ -109,6 +119,7 @@ public class ConfigHandler {
         }
     }
 
+    // 获取玩家金钱
     private double getPlayerMoney(Player player) {
         if (economy == null) {
             return 0.0;
@@ -116,6 +127,7 @@ public class ConfigHandler {
         return economy.getBalance(player);
     }
 
+    // 执行命令
     private void executeCommands(Player player, String path) {
         List<Map<?, ?>> commands = plugin.getConfig().getMapList(path);
         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
@@ -129,7 +141,6 @@ public class ConfigHandler {
                 cmd = (String) entry.getValue();
             }
 
-            // 替换 %player% 为玩家的名字
             if (cmd != null) {
                 cmd = cmd.replace("%player%", player.getName());
             }
@@ -150,11 +161,5 @@ public class ConfigHandler {
                 plugin.getLogger().warning("命令配置格式不正确: " + command);
             }
         }
-    }
-
-    // 添加 reload 方法
-    public void reloadConfig() {
-        plugin.reloadConfig();
-        plugin.getLogger().info("MeowJoinCommand 配置已重新加载！");
     }
 }

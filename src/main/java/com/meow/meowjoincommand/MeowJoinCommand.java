@@ -1,11 +1,9 @@
 package com.meow.meowjoincommand;
 
 import com.meow.meowjoincommand.config.ConfigHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,14 +24,14 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             getServer().getPluginManager().registerEvents(this, this);
             getLogger().info(ChatColor.GREEN + "MeowJoinCommand 已启用!");
         } else {
-            getLogger().info(ChatColor.RED + "MeowJoinCommand 未启用，请在配置文件中启用插件。");
+            getLogger().info(ChatColor.RED + "MeowJoinCommand 已成功加载但尚未启用，请在配置文件中启用插件。");
         }
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        configHandler.checkAndExecuteConfigs(player);
+        configHandler.checkAndExecuteConfigs(player);  // 执行配置
     }
 
     @Override
@@ -48,7 +46,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
                 // 检查是否是具有权限的用户
                 if (sender.hasPermission("meowjoincommand.reload")) {
                     reloadConfig();
-                    configHandler.reload(); // 重新加载 ConfigHandler
+                    configHandler.reloadConfig();  // 重新加载 ConfigHandler
                     sender.sendMessage(ChatColor.GREEN + "插件配置已重新加载。");
                     getLogger().info(ChatColor.GREEN + "插件配置已重新加载！");
                 } else {
