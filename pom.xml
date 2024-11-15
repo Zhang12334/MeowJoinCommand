@@ -22,6 +22,11 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/repository/public/</url>
         </repository>
+        <!-- 添加 JitPack 仓库 -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -33,20 +38,12 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Vault API 依赖 -->
+        <!-- Vault API 依赖, 从 JitPack 获取 -->
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
+            <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- SLF4J 日志 -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -61,6 +58,33 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>
+            </plugin>
+
+            <!-- 资源文件插件，确保将 plugin.yml 和 config.yml 打包到 JAR 文件中 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>**/*.yml</include>
+                                        <include>**/*.properties</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Maven JAR 插件，用于打包插件并设置主类 -->
@@ -79,5 +103,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
