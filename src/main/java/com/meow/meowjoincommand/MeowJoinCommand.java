@@ -39,6 +39,19 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
     private String tickdelaynotintMessage;
     private String unknowncommandMessage;
     private String commandnotcorrectMessage;
+
+    public String getLanguage(String variableName) {
+        try {
+            // 使用反射根据变量名获取对应的字段
+            Field field = this.getClass().getDeclaredField(variableName);
+            field.setAccessible(true);  // 使私有字段可以访问
+            return (String) field.get(this);  // 返回该字段的值
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;  // 如果出现错误，返回null
+        }
+    }
+    
     @Override
     public void onEnable() {
         //bstats
