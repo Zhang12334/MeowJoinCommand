@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class MeowJoinCommand extends JavaPlugin implements Listener {
 
