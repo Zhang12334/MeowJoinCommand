@@ -22,6 +22,11 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/repository/public/</url>
         </repository>
+        <!-- 添加 JitPack 仓库 -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -33,27 +38,12 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Vault API 依赖 -->
+        <!-- Vault API 依赖, 从 JitPack 获取 -->
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
+            <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- MySQL 连接器 -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
-        </dependency>
-
-        <!-- SLF4J 日志 -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -86,5 +76,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
