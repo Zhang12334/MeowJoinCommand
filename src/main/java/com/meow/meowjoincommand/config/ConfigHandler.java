@@ -79,24 +79,21 @@ public class ConfigHandler {
 
         for (Map<?, ?> condition : conditions) {
             String type = null;
-            String placeholder = null;
-            String predicate = null;
             String value = null;
+            String predicate = null;
 
             for (Map.Entry<?, ?> entry : condition.entrySet()) {
                 type = (String) entry.getKey();
-                if (type.equals("placeholderapi")) {
-                    placeholder = (String) entry.getValue(); 
-                }
-                if (type.equals("predicate")) {
-                    predicate = (String) entry.getValue(); 
-                }
-                if (type.equals("value")) {
-                    value = (String) entry.getValue(); 
+                if (entry.getValue() instanceof String) {
+                    value = (String) entry.getValue();
+                } else if (entry.getValue() instanceof Map) {
+                    Map<?, ?> valueMap = (Map<?, ?>) entry.getValue();
+                    predicate = (String) valueMap.get("predicate");
+                    value = (String) valueMap.get("value");
                 }
             }
 
-            if (type != null && placeholder != null && predicate != null && value != null) {
+            if (type != null && value != null) {
                 switch (type) {
                     case "permission":
                         if (!player.hasPermission(value)) {
@@ -109,10 +106,10 @@ public class ConfigHandler {
                         }
                         break;
                     case "placeholderapi":
-                        if (!checkPAPI(player, placeholder, predicate, value)) {
+                        if (!checkPAPI(player, value, predicate)) {
                             return false;
                         }
-                        break;
+                        break;                        
                     default:
                         plugin.getLogger().warning("[Chinese] 未知的条件类型: " + type);
                         plugin.getLogger().warning("[English] Unknown condition type: " + type);
@@ -126,6 +123,22 @@ public class ConfigHandler {
         }
         return true;
     }
+
+    // 修改 checkPAPI 方法来接受 predicate
+    private boolean checkPAPI(Player player, String condition, String predicate) {
+        String placeholder = condition;
+        String expectedValue = value; // 获取 value
+
+        String placeholderValue = PlaceholderAPI.setPlaceholders(player, placeholder);
+        if (predicate.equals("!=")) {
+            return !placeholderValue.equals(expectedValue);
+        } else if (predicate.equals("=")) {
+            return placeholderValue.equals(expectedValue);
+        } else {
+            return false;
+        }
+    }
+
 
 
     // 检查金钱条件
@@ -151,21 +164,6 @@ public class ConfigHandler {
                 return false;
         }
     }
-
-    private boolean checkPAPI(Player player, String placeholder, String predicate, String expectedValue) {
-        // 获取占位符值
-        String placeholderValue = PlaceholderAPI.setPlaceholders(player, placeholder);
-
-        // 判断条件
-        if (predicate.equals("!=")) {
-            return !placeholderValue.equals(expectedValue);
-        } else if (predicate.equals("=")) {
-            return placeholderValue.equals(expectedValue);
-        } else {
-            return false;
-        }
-    }
-
 
     // 获取玩家金钱
     private double getPlayerMoney(Player player) {
