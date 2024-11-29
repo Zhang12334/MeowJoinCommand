@@ -1,5 +1,5 @@
 package com.meow.meowjoincommand.config;
-
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -33,6 +33,16 @@ public class ConfigHandler {
         return false;
     }
 
+    // 初始化 PAPI
+    private boolean setupPAPI() {
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+
+        } else {
+            plugin.getLogger().warning("[Chinese] 没有找到 PlaceHolderAPI 插件或其无法正常工作，将无法使用变量相关功能！");
+            plugin.getLogger().warning("[English] PlaceHolderAPI plugin not found or it is not working properly, placeholders features will not be available!");
+        }
+    }    
+
     // 重载所有配置
     public void reloadConfig() {
         plugin.reloadConfig(); // 重新加载配置文件
@@ -42,6 +52,11 @@ public class ConfigHandler {
             plugin.getLogger().warning("[Chinese] 经济服务无法重载，请确保 Vault 插件存在");
             plugin.getLogger().warning("[English] Economy service cannot be reloaded, please ensure that the Vault plugin exists");
         }
+        // 重新初始化PAPI
+        if (!setupPAPI()) {
+            plugin.getLogger().warning("[Chinese] PlaceHolderAPI 无法重载，请确保 PlaceHolderAPI 插件存在");
+            plugin.getLogger().warning("[English] PlaceHolderAPI cannot be reloaded, please ensure that the PlaceHolderAPI plugin exists");
+        }        
     }
 
     // 检查并执行配置列表中的配置
@@ -82,6 +97,11 @@ public class ConfigHandler {
                             return false;
                         }
                         break;
+                    case "placeholderapi":
+                        if (!checkPAPI(player, value)) {
+                            return false;
+                        }
+                        break;                        
                     default:
                         plugin.getLogger().warning("[Chinese] 未知的条件类型: " + type);
                         plugin.getLogger().warning("[English] Unknown condition type: " + type);
@@ -117,6 +137,21 @@ public class ConfigHandler {
                 return playerMoney <= value;
             default:
                 return false;
+        }
+    }
+
+    private boolean checkPAPI(Player player, String condition) {
+        String placeholder = condition.split(" ")[0];
+        String predicate = condition.split(" ")[1];
+        String expectedValue = condition.split(" ")[2];
+        // 判断
+        String placeholderValue = PlaceholderAPI.setPlaceholders(player, placeholder);
+        if(predicate.equals("!=")){
+            return !placeholderValue.equals(expectedValue);
+        } else if(predicate.equals("=")){
+            return placeholderValue.equals(expectedValue);
+        } else {
+            return false;
         }
     }
 

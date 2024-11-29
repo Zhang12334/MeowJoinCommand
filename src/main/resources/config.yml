@@ -1,5 +1,5 @@
 # 配置文件版本 / Configuration version
-version: 1.0
+version: 1.1
 
 # 是否启用插件 / Whether to enable the plugin
 enable_plugin: true
@@ -25,6 +25,12 @@ configlist:
       - money: ">50"
           # 金钱条件：玩家金钱大于 50 
           # money execution condition: player money greater than 50
+      - placeholderapi: "%some_placeholder%" = "some_value"
+          # 占位符条件：%some_placeholder% 变量的值等于 some_value
+          # placeholder execution condition: %some_placeholder% placeholder value equals some_value
+      - placeholderapi: "%some_placeholder%" != "some_value"
+          # 占位符条件：%some_placeholder% 变量的值不等于 some_value
+          # placeholder execution condition: %some_placeholder% placeholder value not equals some_value
     commands:  
       # 满足条件后的执行指令
       # commands after execution
@@ -60,14 +66,18 @@ configlist:
         tick_delay: 10
         
 # 简体中文
-# 执行条件支持 permission 和 money，money 的判断符号支持>=、>、<=、<、= / 
+# 执行条件支持 permission 、 placeholderapi 和 money
+# money 的判断符号支持>=  > =  <=  <
+# placeholderapi 的判断符号支持 = 或 !=
 # command type 支持 player 及 console，分别为以玩家及服务器权限执行指令
 # %player% 会被自动替换为玩家名
 # tick_delay 为延迟几tick后执行指令，在TPS为20时一秒可以执行20tick 按照这个加一个tickdelay功能
 # 如果执行条件中存在多项要求，则需全部满足才会执行指令
 
 # English
-# Execution conditions support permission and money, the judgment symbol for money supports >=, >, <=, <, =
+# Execution conditions support permission, placeholderapi and money
+# The money judgment symbol supports >= > = <= <
+# The placeholderapi judgment symbol supports = or !=
 # Command type supports player and console, which means executing commands with player or server permissions
 # %player% will be automatically replaced with the player's name
 # tick_delay is the number of ticks to delay before executing the command, at a TPS of 20, one second can execute 20 ticks
