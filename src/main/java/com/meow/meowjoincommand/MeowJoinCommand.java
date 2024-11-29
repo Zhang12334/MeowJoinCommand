@@ -84,7 +84,21 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             nowusinglatestversionMessage = "您正在使用最新版本！";
             reloadedMessage = "配置文件已重载！";
             nopermissionMessage = "你没有权限执行此命令！";
-        } else {
+        } else if("zh_tc".equalsIgnoreCase(language)) {
+            // 繁体中文消息
+            startupMessage = "MeowJoinCommand 已載入！";
+            shutdownMessage = "MeowJoinCommand 已卸載！";
+            notenableMessage = "插件未啟用，請前往配置文件中設定！";
+            nowusingversionMessage = "當前使用版本:";
+            checkingupdateMessage = "正在檢查更新...";
+            checkfailedMessage = "檢查更新失敗，請檢查你的網絡狀況！";
+            updateavailableMessage = "發現新版本:";
+            updateurlMessage = "下載更新地址:";
+            oldversionmaycauseproblemMessage = "舊版本可能會導致問題，請盡快更新！";
+            nowusinglatestversionMessage = "您正在使用最新版本！";
+            reloadedMessage = "配置文件已重載！";
+            nopermissionMessage = "你沒有權限執行此命令！";
+        } else if("en".equalsIgnoreCase(language)) {
             // English message
             startupMessage = "MeowJoinCommand has been loaded!";
             shutdownMessage = "MeowJoinCommand has been disabled!";
@@ -98,7 +112,7 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
             nowusinglatestversionMessage = "You are using the latest version!";
             reloadedMessage = "Configuration file has been reloaded!";
             nopermissionMessage = "You do not have permission to execute this command!";
-        }
+        } 
     }
 
     @Override
