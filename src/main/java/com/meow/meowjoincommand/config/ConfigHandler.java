@@ -74,20 +74,29 @@ public class ConfigHandler {
         }
     }
 
-    // 检查条件
     private boolean checkConditions(Player player, String path) {
         List<Map<?, ?>> conditions = plugin.getConfig().getMapList(path);
 
         for (Map<?, ?> condition : conditions) {
             String type = null;
+            String placeholder = null;
+            String predicate = null;
             String value = null;
 
             for (Map.Entry<?, ?> entry : condition.entrySet()) {
                 type = (String) entry.getKey();
-                value = (String) entry.getValue();
+                if (type.equals("placeholderapi")) {
+                    placeholder = (String) entry.getValue(); 
+                }
+                if (type.equals("predicate")) {
+                    predicate = (String) entry.getValue(); 
+                }
+                if (type.equals("value")) {
+                    value = (String) entry.getValue(); 
+                }
             }
 
-            if (type != null && value != null) {
+            if (type != null && placeholder != null && predicate != null && value != null) {
                 switch (type) {
                     case "permission":
                         if (!player.hasPermission(value)) {
@@ -100,10 +109,10 @@ public class ConfigHandler {
                         }
                         break;
                     case "placeholderapi":
-                        if (!checkPAPI(player, value)) {
+                        if (!checkPAPI(player, placeholder, predicate, value)) {
                             return false;
                         }
-                        break;                        
+                        break;
                     default:
                         plugin.getLogger().warning("[Chinese] 未知的条件类型: " + type);
                         plugin.getLogger().warning("[English] Unknown condition type: " + type);
@@ -117,6 +126,7 @@ public class ConfigHandler {
         }
         return true;
     }
+
 
     // 检查金钱条件
     private boolean checkMoneyCondition(Player player, String condition) {
@@ -142,20 +152,20 @@ public class ConfigHandler {
         }
     }
 
-    private boolean checkPAPI(Player player, String condition) {
-        String placeholder = condition.split(" ")[0];
-        String predicate = condition.split(" ")[1];
-        String expectedValue = condition.split(" ")[2];
-        // 判断
+    private boolean checkPAPI(Player player, String placeholder, String predicate, String expectedValue) {
+        // 获取占位符值
         String placeholderValue = PlaceholderAPI.setPlaceholders(player, placeholder);
-        if(predicate.equals("!=")){
+
+        // 判断条件
+        if (predicate.equals("!=")) {
             return !placeholderValue.equals(expectedValue);
-        } else if(predicate.equals("=")){
+        } else if (predicate.equals("=")) {
             return placeholderValue.equals(expectedValue);
         } else {
             return false;
         }
     }
+
 
     // 获取玩家金钱
     private double getPlayerMoney(Player player) {
