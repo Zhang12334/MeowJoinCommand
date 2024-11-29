@@ -120,20 +120,29 @@ public class ConfigHandler {
 
     private boolean checkPAPI(Player player, String condition) {
         // 使用正则表达式拆分字符串 "%some_placeholders% = some_value" 或 "%some_placeholders% != some_value"
-        String[] parts = condition.split("=");
+        String operator = "";
+        String[] parts = null;
         
-        if (parts.length == 2) {
+        if (condition.contains("!=")) {
+            operator = "!=";
+            parts = condition.split("!=");
+        } else if (condition.contains("=")) {
+            operator = "=";
+            parts = condition.split("=");
+        }
+
+        if (parts != null && parts.length == 2) {
             String placeholder = parts[0].trim();  // "%some_placeholders%"
             String expectedValue = parts[1].trim(); // "some_value"
 
             // 获取占位符的实际值
             String placeholderValue = PlaceholderAPI.setPlaceholders(player, placeholder);
 
-            // 判断操作符
-            if (condition.contains("=")) {
+            // 根据操作符判断
+            if (operator.equals("=")) {
                 // "=" 操作符：占位符值应该等于 expectedValue
                 return placeholderValue.equals(expectedValue);
-            } else if (condition.contains("!=")) {
+            } else if (operator.equals("!=")) {
                 // "!=" 操作符：占位符值不等于 expectedValue
                 return !placeholderValue.equals(expectedValue);
             }
