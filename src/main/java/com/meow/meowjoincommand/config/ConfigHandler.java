@@ -81,6 +81,7 @@ public class ConfigHandler {
             String type = null;
             String value = null;
             String predicate = null;
+            String placeholder = null;
 
             for (Map.Entry<?, ?> entry : condition.entrySet()) {
                 type = (String) entry.getKey();
@@ -88,6 +89,7 @@ public class ConfigHandler {
                     value = (String) entry.getValue();
                 } else if (entry.getValue() instanceof Map) {
                     Map<?, ?> valueMap = (Map<?, ?>) entry.getValue();
+                    placeholder = (String) valueMap.get("placeholderapi");
                     predicate = (String) valueMap.get("predicate");
                     value = (String) valueMap.get("value");
                 }
@@ -106,7 +108,7 @@ public class ConfigHandler {
                         }
                         break;
                     case "placeholderapi":
-                        if (!checkPAPI(player, value, predicate)) {
+                        if (!checkPAPI(player, placeholder, predicate, value)) {
                             return false;
                         }
                         break;                        
@@ -125,10 +127,8 @@ public class ConfigHandler {
     }
 
     // 修改 checkPAPI 方法来接受 predicate
-    private boolean checkPAPI(Player player, String condition, String predicate) {
-        String placeholder = condition;
+    private boolean checkPAPI(Player player, String placeholder, String predicate, String value) {
         String expectedValue = value; // 获取 value
-
         String placeholderValue = PlaceholderAPI.setPlaceholders(player, placeholder);
         if (predicate.equals("!=")) {
             return !placeholderValue.equals(expectedValue);
