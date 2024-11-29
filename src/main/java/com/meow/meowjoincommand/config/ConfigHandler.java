@@ -119,10 +119,10 @@ public class ConfigHandler {
     }
 
     private boolean checkPAPI(Player player, String condition) {
-        // 使用正则表达式拆分字符串 "%some_placeholders% = some_value" 或 "%some_placeholders% != some_value"
+        // 使用正则表达式拆分字符串
         String operator = "";
         String[] parts = null;
-        
+        // 优先拆分 != 防止错误分割字符串
         if (condition.contains("!=")) {
             operator = "!=";
             parts = condition.split("!=");
@@ -132,8 +132,8 @@ public class ConfigHandler {
         }
 
         if (parts != null && parts.length == 2) {
-            String placeholder = parts[0].trim();  // "%some_placeholders%"
-            String expectedValue = parts[1].trim(); // "some_value"
+            String placeholder = parts[0].trim();  // %some_placeholders%
+            String expectedValue = parts[1].trim(); // some_value
 
             // 获取占位符的实际值
             String placeholderValue = PlaceholderAPI.setPlaceholders(player, placeholder);
