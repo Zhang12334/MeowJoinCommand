@@ -1,5 +1,5 @@
 # 配置文件版本 / Configuration version
-version: 1.1
+version: 1.2
 
 # 是否启用插件 / Whether to enable the plugin
 enable_plugin: true
@@ -14,7 +14,8 @@ language: zh_cn
 # 配置列表
 configlist:
   test1:  # 配置名称 / configuration name
-    enabled: false  # 启用此配置
+    enabled: false  # 启用此配置 / enable this config
+    tick_delay: 0 # 延迟几tick后才进行判断 / delay ticks before checking
     execute:  # 执行条件 / execute conditions
       - permission: meowjoincommand.test1  
           # 权限条件：玩家需要拥有 "meowjoincommand.test1" 权限
@@ -55,6 +56,7 @@ configlist:
 
   test2: 
     enabled: false  
+    tick_delay: 0 
     execute: 
       - permission: meowjoincommand.test2 
     commands: 
@@ -71,7 +73,8 @@ configlist:
 # placeholderapi 的判断符号支持 = 或 !=
 # command type 支持 player 及 console，分别为以玩家及服务器权限执行指令
 # %player% 会被自动替换为玩家名
-# tick_delay 为延迟几tick后执行指令，在TPS为20时一秒可以执行20tick 按照这个加一个tickdelay功能
+# 顶层的 tick_delay 为延迟几tick后才进行判断
+# commands 中的 tick_delay 为延迟几tick后执行指令，在TPS为20时一秒可以执行20tick
 # 如果执行条件中存在多项要求，则需全部满足才会执行指令
 
 # English
@@ -80,6 +83,7 @@ configlist:
 # The placeholderapi judgment symbol supports = or !=
 # Command type supports player and console, which means executing commands with player or server permissions
 # %player% will be automatically replaced with the player's name
-# tick_delay is the number of ticks to delay before executing the command, at a TPS of 20, one second can execute 20 ticks
+# The top tick_delay is the delay in ticks before checking
+# The tick_delay in commands is the delay in ticks before executing the command, which can be executed 20 ticks per second with TPS=20
 # If there are multiple requirements in the execution conditions, they must all be satisfied before the command is executed
 # Configuration file English content is translated by TONGYI Lingma

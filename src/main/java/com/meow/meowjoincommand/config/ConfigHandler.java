@@ -74,6 +74,31 @@ public class ConfigHandler {
         }
     }
 
+    // 检查并执行配置列表中的配置
+    public void checkAndExecuteConfigs(Player player) {
+        Map<String, Object> configList = plugin.getConfig().getConfigurationSection("configlist").getValues(false);
+
+        for (String key : configList.keySet()) {
+            if (plugin.getConfig().getBoolean("configlist." + key + ".enabled")) {
+                int tickDelay = plugin.getConfig().getInt("configlist." + key + ".tick_delay", 0); // 获取 tick 延迟，默认是 0
+                // 如果设置了 tick 延迟，则在延迟后执行
+                if (tickDelay > 0) {
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        if (checkConditions(player, "configlist." + key + ".execute")) {
+                            executeCommands(player, "configlist." + key + ".commands");
+                        }
+                    }, tickDelay);
+                } else {
+                    // 如果没有延迟，直接执行
+                    if (checkConditions(player, "configlist." + key + ".execute")) {
+                        executeCommands(player, "configlist." + key + ".commands");
+                    }
+                }
+            }
+        }
+    }
+
+
     // 检查条件
     private boolean checkConditions(Player player, String path) {
         List<Map<?, ?>> conditions = plugin.getConfig().getMapList(path);
