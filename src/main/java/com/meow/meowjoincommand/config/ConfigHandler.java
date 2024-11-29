@@ -74,25 +74,17 @@ public class ConfigHandler {
         }
     }
 
+    // 检查条件
     private boolean checkConditions(Player player, String path) {
         List<Map<?, ?>> conditions = plugin.getConfig().getMapList(path);
 
         for (Map<?, ?> condition : conditions) {
             String type = null;
             String value = null;
-            String predicate = null;
-            String placeholder = null;
 
             for (Map.Entry<?, ?> entry : condition.entrySet()) {
                 type = (String) entry.getKey();
-                if (entry.getValue() instanceof String) {
-                    value = (String) entry.getValue();
-                } else if (entry.getValue() instanceof Map) {
-                    Map<?, ?> valueMap = (Map<?, ?>) entry.getValue();
-                    placeholder = (String) valueMap.get("placeholderapi");
-                    predicate = (String) valueMap.get("predicate");
-                    value = (String) valueMap.get("value");
-                }
+                value = (String) entry.getValue();
             }
 
             if (type != null && value != null) {
@@ -108,7 +100,7 @@ public class ConfigHandler {
                         }
                         break;
                     case "placeholderapi":
-                        if (!checkPAPI(player, placeholder, predicate, value)) {
+                        if (!checkMoneyCondition(player, value)) {
                             return false;
                         }
                         break;                        
@@ -126,17 +118,31 @@ public class ConfigHandler {
         return true;
     }
 
-    // 修改 checkPAPI 方法来接受 predicate
-    private boolean checkPAPI(Player player, String placeholder, String predicate, String value) {
-        String expectedValue = value; // 获取 value
-        String placeholderValue = PlaceholderAPI.setPlaceholders(player, placeholder);
-        if (predicate.equals("!=")) {
-            return !placeholderValue.equals(expectedValue);
-        } else if (predicate.equals("=")) {
-            return placeholderValue.equals(expectedValue);
-        } else {
-            return false;
+    private boolean checkPAPI(Player player, String condition) {
+        // 使用正则表达式拆分字符串 "%some_placeholders% = some_value" 或 "%some_placeholders% != some_value"
+        String[] parts = condition.split("=");
+        
+        if (parts.length == 2) {
+            String placeholder = parts[0].trim();  // "%some_placeholders%"
+            String expectedValue = parts[1].trim(); // "some_value"
+
+            // 获取占位符的实际值
+            String placeholderValue = PlaceholderAPI.setPlaceholders(player, placeholder);
+
+            // 判断操作符
+            if (condition.contains("=")) {
+                // "=" 操作符：占位符值应该等于 expectedValue
+                return placeholderValue.equals(expectedValue);
+            } else if (condition.contains("!=")) {
+                // "!=" 操作符：占位符值不等于 expectedValue
+                return !placeholderValue.equals(expectedValue);
+            }
         }
+
+        // 如果没有找到操作符或格式不正确，返回 false
+        plugin.getLogger().warning("[Chinese] 条件配置格式不正确: " + condition);
+        plugin.getLogger().warning("[English] Condition configuration format is incorrect: " + condition);
+        return false;
     }
 
 

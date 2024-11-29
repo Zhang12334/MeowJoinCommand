@@ -25,14 +25,10 @@ configlist:
       - money: ">50"
           # 金钱条件：玩家金钱大于 50 
           # money execution condition: player money greater than 50
-      - placeholderapi: "%some_placeholder%" 
-        predicate: "="
-        value: "some_value"
+      - placeholderapi: "%some_placeholder% = some_value" 
           # 占位符条件：%some_placeholder% 变量的值等于 some_value
           # placeholder execution condition: %some_placeholder% placeholder value equals some_value
-      - placeholderapi: "%some_placeholder%" 
-        predicate: "!="
-        value: "some_value"
+      - placeholderapi: "%some_placeholder% != some_value" 
           # 占位符条件：%some_placeholder% 变量的值不等于 some_value
           # placeholder execution condition: %some_placeholder% placeholder value not equals some_value
     commands:  
