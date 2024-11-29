@@ -19,6 +19,7 @@ public class ConfigHandler {
     public ConfigHandler(JavaPlugin plugin) {
         this.plugin = plugin;
         setupEconomy(); // 初始化时尝试加载经济服务
+        setupPAPI(); // 初始化 PAPI
     }
 
     // 初始化 Vault 经济接口
@@ -36,10 +37,11 @@ public class ConfigHandler {
     // 初始化 PAPI
     private boolean setupPAPI() {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-
+            return true;
         } else {
             plugin.getLogger().warning("[Chinese] 没有找到 PlaceHolderAPI 插件或其无法正常工作，将无法使用变量相关功能！");
             plugin.getLogger().warning("[English] PlaceHolderAPI plugin not found or it is not working properly, placeholders features will not be available!");
+            return false;
         }
     }    
 
