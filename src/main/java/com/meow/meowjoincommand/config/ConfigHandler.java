@@ -100,7 +100,7 @@ public class ConfigHandler {
                         }
                         break;
                     case "placeholderapi":
-                        if (!checkMoneyCondition(player, value)) {
+                        if (!checkPAPI(player, value)) {
                             return false;
                         }
                         break;                        
