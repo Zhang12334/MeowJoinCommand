@@ -23,12 +23,10 @@
             <url>https://hub.spigotmc.org/nexus/repository/public/</url>
         </repository>
         <!-- 添加 PlaceHolderAPI 仓库 -->
-        <repositories>
-            <repository>
-                <id>placeholderapi</id>
-                <url>https://repo.extendedclip.com/releases/</url>
-            </repository>
-        </repositories>        
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/releases/</url>
+        </repository>    
         <!-- 添加 JitPack 仓库 -->
         <repository>
             <id>jitpack.io</id>
@@ -45,14 +43,12 @@
             <scope>provided</scope>
         </dependency>
         <!-- PlaceHolder API 依赖 -->
-        <dependencies>
-            <dependency>
+        <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.6</version>
             <scope>provided</scope>
-            </dependency>
-        </dependencies>        
+        </dependency>      
         <!-- Vault API 依赖, 从 JitPack 获取 -->
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
