@@ -76,6 +76,14 @@ public class LanguageManager {
             messages.put("nowusinglatestversion", "您正在使用最新版本!");
             messages.put("reloaded", "配置文件已重載!");
             messages.put("nopermission", "你沒有權限執行此命令!");
+            messages.put("pluginNotEnabled", "插件未啟用!");
+            messages.put("no-vault-plugin", "沒有找到 Vault 插件或經濟服務無法正常工作，將無法使用經濟系統相關功能!");
+            messages.put("no-papi-plugin", "沒有找到 PlaceHolderAPI 插件或其無法正常工作，將無法使用變量相關功能!");
+            messages.put("unknownConditionType", "未知的條件類型: %s");
+            messages.put("incorrectConditionFormat", "條件配置格式不正確: %s");
+            messages.put("tickDelayMustBeInt", "tick_delay 必須是整數, 當前值: %s");
+            messages.put("unknownCommandType", "未知的命令類型: %s");
+            messages.put("commandConfigFormatIncorrect", "命令配置格式不正確: %s");            
 
         } else if ("en_us".equalsIgnoreCase(language)) {
             // English messages
@@ -93,6 +101,14 @@ public class LanguageManager {
             messages.put("nowusinglatestversion", "You are using the latest version!");
             messages.put("reloaded", "Configuration file has been reloaded!");
             messages.put("nopermission", "You do not have permission to execute this command!");
+            messages.put("pluginNotEnabled", "Plugin not enabled!");
+            messages.put("no-vault-plugin", "No Vault plugin found or economy service is not working properly, economy system related functions will not work!");
+            messages.put("no-papi-plugin", "No PlaceHolderAPI plugin found or it is not working properly, variable related functions will not work!");
+            messages.put("unknownConditionType", "Unknown condition type: %s");
+            messages.put("incorrectConditionFormat", "Condition configuration format is incorrect: %s");
+            messages.put("tickDelayMustBeInt", "tick_delay must be an integer, current value: %s");
+            messages.put("unknownCommandType", "Unknown command type: %s");
+            messages.put("commandConfigFormatIncorrect", "Command configuration format is incorrect: %s");
 
         } else if ("ja_jp".equalsIgnoreCase(language)) {
             // 日本语消息
@@ -110,6 +126,14 @@ public class LanguageManager {
             messages.put("nowusinglatestversion", "現在最新バージョンを使用しています!");
             messages.put("reloaded", "設定ファイルがリロードされました!");
             messages.put("nopermission", "このコマンドの実行に権限がありません!");
+            messages.put("pluginNotEnabled", "プラグインが有効化されていません!");
+            messages.put("no-vault-plugin", "Vaultプラグインが見つかりませんか、経済サービスが正常に動作していないため、経済システム関連の機能は動作しません!");
+            messages.put("no-papi-plugin", "PlaceHolderAPIプラグインが見つかりませんか、正常に動作していないため、変数関連の機能は動作しません!");
+            messages.put("unknownConditionType", "未知の条件タイプ: %s");
+            messages.put("incorrectConditionFormat", "条件構成フォーマットが正しくありません: %s");
+            messages.put("tickDelayMustBeInt", "tick_delayは整数でなければなりません。現在値: %s");
+            messages.put("unknownCommandType", "未知のコマンドタイプ: %s");
+            messages.put("commandConfigFormatIncorrect", "コマンド構成フォーマットが正しくありません: %s");
 
         }
     }

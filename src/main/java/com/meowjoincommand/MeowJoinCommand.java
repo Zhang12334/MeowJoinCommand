@@ -45,6 +45,9 @@ public class MeowJoinCommand extends JavaPlugin implements Listener {
         } else {
             getLogger().info(languageManager.getMessage("pluginNotEnabled"));
         }
+        
+        // 翻译者信息
+        getLogger().info(languageManager.getMessage("TranslationContributors"));
 
         // 更新检查
 
