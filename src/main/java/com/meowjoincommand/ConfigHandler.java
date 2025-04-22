@@ -1,4 +1,4 @@
-package com.meow.meowjoincommand.config;
+package com.meowjoincommand;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -15,23 +15,34 @@ public class ConfigHandler {
 
     private final JavaPlugin plugin;
     private Economy economy;
+    private LanguageManager languageManager;
 
     public ConfigHandler(JavaPlugin plugin) {
         this.plugin = plugin;
+        languageManager = new LanguageManager(plugin.getConfig());
         setupEconomy(); // 初始化时尝试加载经济服务
         setupPAPI(); // 初始化 PAPI
     }
 
-    // 初始化 Vault 经济接口
     private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp != null) {
-            economy = rsp.getProvider();
-            return true;
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+            plugin.getLogger().warning(languageManager.getMessage("no-vault-plugin"));
+            return false;
         }
-        plugin.getLogger().warning("[Chinese] 没有找到 Vault 插件或经济服务无法正常工作，将无法使用经济系统相关功能！");
-        plugin.getLogger().warning("[English] Vault plugin not found or the economy service is not working properly, the economy system related functions will not work!");
-        return false;
+    
+        try {
+            RegisteredServiceProvider<?> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+            if (rsp != null) {
+                economy = (Economy) rsp.getProvider();
+                return true;
+            } else {
+                plugin.getLogger().warning(languageManager.getMessage("no-vault-plugin"));
+                return false;
+            }
+        } catch (Exception e) {
+            plugin.getLogger().warning(languageManager.getMessage("no-vault-plugin"));
+            return false;
+        }
     }
 
     // 初始化 PAPI
@@ -39,26 +50,21 @@ public class ConfigHandler {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             return true;
         } else {
-            plugin.getLogger().warning("[Chinese] 没有找到 PlaceHolderAPI 插件或其无法正常工作，将无法使用变量相关功能！");
-            plugin.getLogger().warning("[English] PlaceHolderAPI plugin not found or it is not working properly, placeholders features will not be available!");
+            plugin.getLogger().warning(languageManager.getMessage("no-papi-plugin"));
             return false;
         }
     }    
 
     // 重载所有配置
     public void reloadConfig() {
+        
         plugin.reloadConfig(); // 重新加载配置文件
 
         // 重新初始化经济服务
-        if (!setupEconomy()) {
-            plugin.getLogger().warning("[Chinese] 经济服务无法重载，请确保 Vault 插件存在");
-            plugin.getLogger().warning("[English] Economy service cannot be reloaded, please ensure that the Vault plugin exists");
-        }
+        setupEconomy();
+
         // 重新初始化PAPI
-        if (!setupPAPI()) {
-            plugin.getLogger().warning("[Chinese] PlaceHolderAPI 无法重载，请确保 PlaceHolderAPI 插件存在");
-            plugin.getLogger().warning("[English] PlaceHolderAPI cannot be reloaded, please ensure that the PlaceHolderAPI plugin exists");
-        }        
+        setupPAPI();
     }
 
     // 检查并执行配置列表中的配置
@@ -84,7 +90,6 @@ public class ConfigHandler {
             }
         }
     }
-
 
     // 检查条件
     private boolean checkConditions(Player player, String path) {
@@ -117,13 +122,11 @@ public class ConfigHandler {
                         }
                         break;                        
                     default:
-                        plugin.getLogger().warning("[Chinese] 未知的条件类型: " + type);
-                        plugin.getLogger().warning("[English] Unknown condition type: " + type);
+                        plugin.getLogger().warning(String.format(languageManager.getMessage("unknownConditionType"), type));
                         return false;
                 }
             } else {
-                plugin.getLogger().warning("[Chinese] 条件配置格式不正确: " + condition);
-                plugin.getLogger().warning("[English] Condition configuration format is incorrect: " + condition);
+                plugin.getLogger().warning(String.format(languageManager.getMessage("incorrectConditionFormat"), condition));
                 return false;
             }
         }
@@ -161,8 +164,7 @@ public class ConfigHandler {
         }
 
         // 如果没有找到操作符或格式不正确，返回 false
-        plugin.getLogger().warning("[Chinese] 条件配置格式不正确: " + condition);
-        plugin.getLogger().warning("[English] Condition configuration format is incorrect: " + condition);
+        plugin.getLogger().warning(String.format(languageManager.getMessage("incorrectConditionFormat"), condition));
         return false;
     }
 
@@ -216,8 +218,7 @@ public class ConfigHandler {
                 if (tickObj instanceof Integer) {
                     tickDelay = (int) tickObj; // 直接转换为 int
                 } else {
-                    plugin.getLogger().warning("[Chinese] tick_delay 必须是整数，当前值: " + tickObj);
-                    plugin.getLogger().warning("[English] tick_delay must be an integer, current value: " + tickObj);
+                    plugin.getLogger().warning(String.format(languageManager.getMessage("tickDelayMustBeInt"), tickObj.toString()));                    
                 }
             }
 
@@ -240,15 +241,13 @@ public class ConfigHandler {
                                     Bukkit.dispatchCommand(console, finalCmd);
                                     break;
                                 default:
-                                    plugin.getLogger().warning("[Chinese] 未知的命令类型: " + type);
-                                    plugin.getLogger().warning("[English] Unknown command type: " + type);
+                                    plugin.getLogger().warning(String.format(languageManager.getMessage("unknownCommandType"), type));
                                     break;
                             }
                         }
                     }.runTaskLater(plugin, tickDelay); // 延迟tick执行
                 } else {
-                    plugin.getLogger().warning("[Chinese] 命令配置格式不正确: " + command);
-                    plugin.getLogger().warning("[English] Command configuration format is incorrect: " + command);
+                    plugin.getLogger().warning(String.format(languageManager.getMessage("commandConfigFormatIncorrect"), command));
                 }
             }
         }

@@ -1,17 +1,19 @@
 name: MeowJoinCommand
-version: 1.2
-main: com.meow.meowjoincommand.MeowJoinCommand
+version: 1.3.0
+main: com.meowjoincommand.MeowJoinCommand
 api-version: 1.16
 softdepend: ["PlaceholderAPI", "Vault"]
+depend:
+  - MeowLibs
 commands:
   meowjoincommand:
-    description: 主插件命令
+    description: Main command
     usage: /<command> reload
     subcommands:
       reload:
-        description: 重新加载插件配置
+        description: Reload the configuration file
         usage: /meowjoincommand reload
 permissions:
   meowjoincommand.reload:
-    description: 允许重载配置文件
+    description: Allows the player to reload the configuration file
     default: op
