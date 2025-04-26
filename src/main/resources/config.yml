@@ -26,9 +26,17 @@ configlist:
           # 权限条件：玩家需要拥有 "meowjoincommand.test0" 权限
           # permission execution condition: player need to have "meowjoincommand.test0" permission
 
+      - permission: "meowjoincommand.vip0 || meowjoincommand.vip1"
+          # 权限条件：玩家需要拥有 "meowjoincommand.vip0" 或 "meowjoincommand.vip1" 权限
+          # permission execution condition: player need to have "meowjoincommand.vip0" or "meowjoincommand.vip1" permission
+
       - money: ">50"
           # 金钱条件：玩家金钱大于 50 
           # money execution condition: player money greater than 50
+
+      - money: ">51 || <=19 || =30"
+          # 金钱条件：玩家金钱大于51 或 小于等于19 或 等于 30
+          # money execution condition: player money greater than 51 or less than or equal to 19 or equals 30
 
       - placeholderapi: "%some_placeholder% = some_value" 
           # 占位符条件：%some_placeholder% 变量的值等于 some_value
@@ -37,28 +45,20 @@ configlist:
       - placeholderapi: "%some_placeholder% != some_value" 
           # 占位符条件：%some_placeholder% 变量的值不等于 some_value
           # placeholder execution condition: %some_placeholder% placeholder value not equals some_value
+      
+      - placeholderapi: "%some_placeholder% = some_value1 || %some_placeholder% = some_value2 || %some_placeholder% = some_value3"
+          # 占位符条件：%some_placeholder% 变量的值等于 some_value1 或等于 some_value2 或等于 some_value3
+          # placeholder execution condition: %some_placeholder% placeholder value equals some_value1 or %some_placeholder% placeholder value equals some_value2 or %some_placeholder% placeholder value equals some_value3
 
     commands:  
       # 满足条件后的执行指令
       # commands after execution
 
-      - type: player  
-          # 以玩家身份执行 
-          # executed as a player
-
-        command: say Hello, %player%! 
-          # 玩家执行的指令，%player% 会被替换为玩家名 
-          # command executed as a player, %player% will be replaced with player name
-
-        tick_delay: 5 
-          # 延迟几tick后执行 
-          # executed after delaying for a few ticks
-
       - type: console  
           # 以服务器身份执行 
           # executed as a server
 
-        command: tell %player%, Welcome to the server! 
+        command: tell %player% Welcome to the server! 
           # 服务器执行的指令，%player% 会被替换为玩家名 
           # command executed as a server, %player% will be replaced with player name
 
@@ -80,8 +80,9 @@ configlist:
         tick_delay: 10
         
 # 执行条件支持 permission 、 placeholderapi 和 money
-# money 的判断符号支持>=  > =  <=  <
+# money 的判断符号支持 >=（大于等于） >（大于） =（等于）  <=（小于等于）  <（小于）
 # placeholderapi 的判断符号支持 = 或 !=
+# 判断条件支持使用||进行“或”判断，多个条件满足一个时即可触发
 # command type 支持 player 及 console，分别为以玩家及服务器权限执行指令
 # %player% 会被自动替换为玩家名
 # 顶层的 tick_delay 为延迟几tick后才进行判断
@@ -91,6 +92,7 @@ configlist:
 # Execution conditions support permission, placeholderapi and money
 # The money judgment symbol supports >= > = <= <
 # The placeholderapi judgment symbol supports = or !=
+# The judgment conditions support using || to perform "or" judgment, and one condition is sufficient to trigger
 # Command type supports player and console, which means executing commands with player or server permissions
 # %player% will be automatically replaced with the player's name
 # The top tick_delay is the delay in ticks before checking
