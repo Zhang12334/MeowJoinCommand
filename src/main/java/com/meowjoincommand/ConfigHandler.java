@@ -94,36 +94,34 @@ public class ConfigHandler {
     // 检查条件
     private boolean checkConditions(Player player, String path) {
         List<Map<?, ?>> conditions = plugin.getConfig().getMapList(path);
-
+    
         for (Map<?, ?> condition : conditions) {
             String type = null;
             String value = null;
-
+    
             for (Map.Entry<?, ?> entry : condition.entrySet()) {
                 type = (String) entry.getKey();
                 value = (String) entry.getValue();
             }
-
+    
             if (type != null && value != null) {
+                boolean conditionMet = false;
                 switch (type) {
                     case "permission":
-                        if (!player.hasPermission(value)) {
-                            return false;
-                        }
+                        conditionMet = checkPermissionCondition(player, value);
                         break;
                     case "money":
-                        if (!checkMoneyCondition(player, value)) {
-                            return false;
-                        }
+                        conditionMet = checkMoneyCondition(player, value);
                         break;
                     case "placeholderapi":
-                        if (!checkPAPI(player, value)) {
-                            return false;
-                        }
-                        break;                        
+                        conditionMet = checkPlaceholderCondition(player, value);
+                        break;
                     default:
                         plugin.getLogger().warning(String.format(languageManager.getMessage("unknownConditionType"), type));
                         return false;
+                }
+                if (!conditionMet) {
+                    return false;
                 }
             } else {
                 plugin.getLogger().warning(String.format(languageManager.getMessage("incorrectConditionFormat"), condition));
@@ -133,64 +131,52 @@ public class ConfigHandler {
         return true;
     }
 
-    private boolean checkPAPI(Player player, String condition) {
-        // 使用正则表达式拆分字符串
-        String operator = "";
-        String[] parts = null;
-        // 优先拆分 != 防止错误分割字符串
-        if (condition.contains("!=")) {
-            operator = "!=";
-            parts = condition.split("!=");
-        } else if (condition.contains("=")) {
-            operator = "=";
-            parts = condition.split("=");
-        }
-
-        if (parts != null && parts.length == 2) {
-            String placeholder = parts[0].trim();  // %some_placeholders%
-            String expectedValue = parts[1].trim(); // some_value
-
-            // 获取占位符的实际值
-            String placeholderValue = PlaceholderAPI.setPlaceholders(player, placeholder);
-
-            // 根据操作符判断
-            if (operator.equals("=")) {
-                // "=" 操作符：占位符值应该等于 expectedValue
-                return placeholderValue.equals(expectedValue);
-            } else if (operator.equals("!=")) {
-                // "!=" 操作符：占位符值不等于 expectedValue
-                return !placeholderValue.equals(expectedValue);
+    private boolean checkPermissionCondition(Player player, String value) {
+        String[] permissions = value.split("\\s*\\|\\|\\s*");
+        for (String perm : permissions) {
+            if (player.hasPermission(perm.trim())) {
+                return true;
             }
         }
-
-        // 如果没有找到操作符或格式不正确，返回 false
-        plugin.getLogger().warning(String.format(languageManager.getMessage("incorrectConditionFormat"), condition));
         return false;
     }
 
-
-
-    // 检查金钱条件
-    private boolean checkMoneyCondition(Player player, String condition) {
-        double playerMoney = getPlayerMoney(player);
+    private boolean checkMoneyCondition(Player player, String value) {
+        String[] conditions = value.split("\\s*\\|\\|\\s*");
+        for (String cond : conditions) {
+            if (checkSingleMoneyCondition(player, cond.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean checkSingleMoneyCondition(Player player, String condition) {
         String operator = condition.replaceAll("[^><=!]", "").trim();
-        double value = Double.parseDouble(condition.replaceAll("[^0-9.-]", "").trim());
-
-        switch (operator) {
-            case ">":
-                return playerMoney > value;
-            case "<":
-                return playerMoney < value;
-            case "=":
-                return playerMoney == value;
-            case "!":
-                return playerMoney != value;
-            case ">=":
-                return playerMoney >= value;
-            case "<=":
-                return playerMoney <= value;
-            default:
-                return false;
+        String numberPart = condition.replaceAll("[^0-9.-]", "").trim();
+        
+        if (numberPart.isEmpty()) {
+            plugin.getLogger().warning(String.format(languageManager.getMessage("unknownConditionType"), condition));
+            return false;
+        }
+        
+        try {
+            double value = Double.parseDouble(numberPart);
+            double playerMoney = getPlayerMoney(player);
+    
+            switch (operator) {
+                case ">": return playerMoney > value;
+                case "<": return playerMoney < value;
+                case "=": return playerMoney == value;
+                case "!=": return playerMoney != value;
+                case ">=": return playerMoney >= value;
+                case "<=": return playerMoney <= value;
+                default:
+                    plugin.getLogger().warning(String.format(languageManager.getMessage("unknownOperator"), operator));
+                    return false;
+            }
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 
@@ -201,6 +187,49 @@ public class ConfigHandler {
         }
         return economy.getBalance(player);
     }
+
+    private boolean checkPlaceholderCondition(Player player, String value) {
+        String[] conditions = value.split("\\s*\\|\\|\\s*");
+        for (String cond : conditions) {
+            if (checkSinglePlaceholderCondition(player, cond.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean checkSinglePlaceholderCondition(Player player, String condition) {
+        String operator = "";
+        String[] parts = null;
+        
+        // 处理 != 优先
+        if (condition.contains("!=")) {
+            operator = "!=";
+            parts = condition.split("!=", 2);
+        } else if (condition.contains("=")) {
+            operator = "=";
+            parts = condition.split("=", 2);
+        }
+    
+        if (parts == null || parts.length != 2) {
+            plugin.getLogger().warning(String.format(languageManager.getMessage("incorrectConditionFormat"), condition));
+            return false;
+        }
+    
+        String placeholder = parts[0].trim();
+        String expectedValue = parts[1].trim();
+        String actualValue = PlaceholderAPI.setPlaceholders(player, placeholder);
+    
+        if (operator.equals("=")) {
+            return actualValue.equals(expectedValue);
+        } else if (operator.equals("!=")) {
+            return !actualValue.equals(expectedValue);
+        }
+        
+        plugin.getLogger().warning(String.format(languageManager.getMessage("unknownOperator"), operator));
+        return false;
+    }
+        
 
     // 执行命令
     private void executeCommands(Player player, String path) {

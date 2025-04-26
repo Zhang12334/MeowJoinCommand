@@ -55,6 +55,7 @@ public class LanguageManager {
             messages.put("no-vault-plugin", "没有找到 Vault 插件或经济服务无法正常工作，将无法使用经济系统相关功能!");
             messages.put("no-papi-plugin", "没有找到 PlaceHolderAPI 插件或其无法正常工作，将无法使用变量相关功能!");
             messages.put("unknownConditionType", "未知的条件类型: %s");
+            messages.put("unknownOperator", "未知的运算符: %s");
             messages.put("incorrectConditionFormat", "条件配置格式不正确: %s");
             messages.put("tickDelayMustBeInt", "tick_delay 必须是整数, 当前值: %s");
             messages.put("unknownCommandType", "未知的命令类型: %s");
@@ -80,6 +81,7 @@ public class LanguageManager {
             messages.put("no-vault-plugin", "沒有找到 Vault 插件或經濟服務無法正常工作，將無法使用經濟系統相關功能!");
             messages.put("no-papi-plugin", "沒有找到 PlaceHolderAPI 插件或其無法正常工作，將無法使用變量相關功能!");
             messages.put("unknownConditionType", "未知的條件類型: %s");
+            messages.put("unknownOperator", "未知的運算符: %s");
             messages.put("incorrectConditionFormat", "條件配置格式不正確: %s");
             messages.put("tickDelayMustBeInt", "tick_delay 必須是整數, 當前值: %s");
             messages.put("unknownCommandType", "未知的命令類型: %s");
@@ -105,6 +107,7 @@ public class LanguageManager {
             messages.put("no-vault-plugin", "No Vault plugin found or economy service is not working properly, economy system related functions will not work!");
             messages.put("no-papi-plugin", "No PlaceHolderAPI plugin found or it is not working properly, variable related functions will not work!");
             messages.put("unknownConditionType", "Unknown condition type: %s");
+            messages.put("unknownOperator", "Unknown operator: %s");
             messages.put("incorrectConditionFormat", "Condition configuration format is incorrect: %s");
             messages.put("tickDelayMustBeInt", "tick_delay must be an integer, current value: %s");
             messages.put("unknownCommandType", "Unknown command type: %s");
@@ -130,6 +133,7 @@ public class LanguageManager {
             messages.put("no-vault-plugin", "Vaultプラグインが見つかりませんか、経済サービスが正常に動作していないため、経済システム関連の機能は動作しません!");
             messages.put("no-papi-plugin", "PlaceHolderAPIプラグインが見つかりませんか、正常に動作していないため、変数関連の機能は動作しません!");
             messages.put("unknownConditionType", "未知の条件タイプ: %s");
+            messages.put("unknownOperator", "未知の演算子: %s");
             messages.put("incorrectConditionFormat", "条件構成フォーマットが正しくありません: %s");
             messages.put("tickDelayMustBeInt", "tick_delayは整数でなければなりません。現在値: %s");
             messages.put("unknownCommandType", "未知のコマンドタイプ: %s");
