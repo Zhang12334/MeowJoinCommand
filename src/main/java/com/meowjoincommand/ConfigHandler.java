@@ -134,8 +134,17 @@ public class ConfigHandler {
     private boolean checkPermissionCondition(Player player, String value) {
         String[] permissions = value.split("\\s*\\|\\|\\s*");
         for (String perm : permissions) {
-            if (player.hasPermission(perm.trim())) {
-                return true;
+            perm = perm.trim();
+            if (perm.startsWith("!")) {
+                // 如果是感叹号开头的权限，检查玩家是否没有该权限
+                if (!player.hasPermission(perm.substring(1))) {
+                    return true;
+                }
+            } else {
+                // 普通权限检查
+                if (player.hasPermission(perm)) {
+                    return true;
+                }
             }
         }
         return false;

@@ -1,70 +1,102 @@
 # 配置文件版本 / Configuration version
-version: 1.3.1
+version: 1.3.2
 
-# 是否启用插件 / Whether to enable the plugin
-# true 表示启用插件，false 表示禁用插件
-# enable plugin, true / false
+# 插件开关 / Plugin Toggle
+# true = 启用插件 / true = enable plugin
+# false = 禁用插件 / false = disable plugin
 enable_plugin: true
 
-# Language / 语言
-# 可用列表 / Available languages: zh_hans / zh_hant / en_us / ja_jp
+# 语言设置 / Language Settings
+# 可选语言 / Available languages: 
+# zh_hans = 简体中文 / zh_hans = Simplified Chinese
+# zh_hant = 繁體中文 / zh_hant = Traditional Chinese
+# en_us = English / en_us = English
+# ja_jp = 日本語 / ja_jp = Japanese
 language: zh_hans
 
-# 配置列表
+# 配置列表 / Configuration List
 configlist:
 
-  test1:  # 配置名称 / configuration name
-    enabled: false  # 启用此配置 / enable this config
-    tick_delay: 0 # 延迟几tick后才进行判断 / delay ticks before checking
-    execute:  # 执行条件 / execute conditions
+  test1:  # 配置名称 / Configuration name
+    enabled: false  # 是否启用此配置 / Enable this configuration
+    tick_delay: 0 # 延迟多少tick后执行检查 / Delay ticks before checking
+    execute:  # 执行条件 / Execution conditions
+
+      - permission: "!meowjoincommand.banned"
+          # 权限条件：玩家不能拥有 "meowjoincommand.banned" 权限
+          # Permission condition: Player must NOT have the "meowjoincommand.banned" permission
+
+      - permission: "!meowjoincommand.banned1 || !meowjoincommand.banned2"
+          # 权限条件：玩家不能同时拥有 "meowjoincommand.banned1" 和 "meowjoincommand.banned2" 权限
+          # Permission condition: Player must NOT have both "meowjoincommand.banned1" AND "meowjoincommand.banned2" permissions
+
+      - permission: "!meowjoincommand.banned3 || meowjoincommand.unbanned"
+          # 权限条件：（玩家不拥有 "meowjoincommand.banned3" 权限）或者（拥有 "meowjoincommand.unbanned" 权限）这两者其中满足一者即算作满足条件
+          # Permission conditions: (player does not have the "meowjoincommand.banned3" permission) or (has the "meowjoincommand.unbanned" permission) Either of these two conditions is met.
+
+      - permission: "!meowjoincommand.banned3 || meowjoincommand.unbanned || meowjoincommand.unbanned1"
+          # 权限条件：（玩家不拥有 "meowjoincommand.banned3" 权限）或者（拥有 "meowjoincommand.unbanned" 权限）又或者（拥有 "meowjoincommand.unbanned1" 权限）这多种判定条件其中满足一者即算作满足条件
+          # Permission conditions: (The player does not have the "meowjoincommand.banned3" permission) or (has the "meowjoincommand.unbanned" permission) or (has the "meowjoincommand.unbanned1" permission) If one of these conditions is met, the condition is met.
 
       - permission: meowjoincommand.test1  
-          # 权限条件：玩家需要拥有 "meowjoincommand.test1" 权限
-          # permission execution condition: player need to have "meowjoincommand.test1" permission
+          # 权限条件：玩家必须拥有 "meowjoincommand.test1" 权限
+          # Permission condition: Player must have the "meowjoincommand.test1" permission
 
       - permission: meowjoincommand.test0
-          # 权限条件：玩家需要拥有 "meowjoincommand.test0" 权限
-          # permission execution condition: player need to have "meowjoincommand.test0" permission
+          # 权限条件：玩家必须拥有 "meowjoincommand.test0" 权限
+          # Permission condition: Player must have the "meowjoincommand.test0" permission
 
       - permission: "meowjoincommand.vip0 || meowjoincommand.vip1"
-          # 权限条件：玩家需要拥有 "meowjoincommand.vip0" 或 "meowjoincommand.vip1" 权限
-          # permission execution condition: player need to have "meowjoincommand.vip0" or "meowjoincommand.vip1" permission
+          # 权限条件：玩家必须拥有 "meowjoincommand.vip0" 或 "meowjoincommand.vip1" 权限之一
+          # Permission condition: Player must have either "meowjoincommand.vip0" OR "meowjoincommand.vip1" permission
 
       - money: ">50"
-          # 金钱条件：玩家金钱大于 50 
-          # money execution condition: player money greater than 50
+          # 金钱条件：玩家余额必须大于 50
+          # Money condition: Player's balance must be greater than 50
 
       - money: ">51 || <=19 || =30"
-          # 金钱条件：玩家金钱大于51 或 小于等于19 或 等于 30
-          # money execution condition: player money greater than 51 or less than or equal to 19 or equals 30
+          # 金钱条件：玩家余额必须满足以下条件之一：
+          # - 大于 51
+          # - 小于等于 19
+          # - 等于 30
+          # Money condition: Player's balance must meet one of the following:
+          # - Greater than 51
+          # - Less than or equal to 19
+          # - Equal to 30
 
       - placeholderapi: "%some_placeholder% = some_value" 
-          # 占位符条件：%some_placeholder% 变量的值等于 some_value
-          # placeholder execution condition: %some_placeholder% placeholder value equals some_value
+          # 占位符条件：%some_placeholder% 的值必须等于 some_value
+          # Placeholder condition: %some_placeholder% must equal some_value
 
       - placeholderapi: "%some_placeholder% != some_value" 
-          # 占位符条件：%some_placeholder% 变量的值不等于 some_value
-          # placeholder execution condition: %some_placeholder% placeholder value not equals some_value
+          # 占位符条件：%some_placeholder% 的值不能等于 some_value
+          # Placeholder condition: %some_placeholder% must NOT equal some_value
       
       - placeholderapi: "%some_placeholder% = some_value1 || %some_placeholder% = some_value2 || %some_placeholder% = some_value3"
-          # 占位符条件：%some_placeholder% 变量的值等于 some_value1 或等于 some_value2 或等于 some_value3
-          # placeholder execution condition: %some_placeholder% placeholder value equals some_value1 or %some_placeholder% placeholder value equals some_value2 or %some_placeholder% placeholder value equals some_value3
+          # 占位符条件：%some_placeholder% 的值必须等于以下之一：
+          # - some_value1
+          # - some_value2
+          # - some_value3
+          # Placeholder condition: %some_placeholder% must equal one of the following:
+          # - some_value1
+          # - some_value2
+          # - some_value3
 
     commands:  
-      # 满足条件后的执行指令
-      # commands after execution
+      # 满足条件后执行的命令 / Commands to execute when conditions are met
+      # 这些指令会按照配置顺序从上到下依次执行 / These commands will be executed in order from top to bottom
 
       - type: console  
-          # 以服务器身份执行 
-          # executed as a server
+          # 命令执行者：服务器控制台
+          # Command executor: Server console
 
         command: tell %player% Welcome to the server! 
-          # 服务器执行的指令，%player% 会被替换为玩家名 
-          # command executed as a server, %player% will be replaced with player name
+          # 要执行的命令，%player% 会被替换为玩家名称
+          # Command to execute, %player% will be replaced with player's name
 
         tick_delay: 5 
-          # 延迟几tick后执行 
-          # executed after delaying for a few ticks
+          # 延迟多少tick后执行此命令
+          # Delay in ticks before executing this command
 
   test2: 
     enabled: false  
@@ -79,23 +111,39 @@ configlist:
         command: money give %player% 100 
         tick_delay: 10
         
-# 执行条件支持 permission 、 placeholderapi 和 money
-# money 的判断符号支持 >=（大于等于） >（大于） =（等于）  <=（小于等于）  <（小于）
-# placeholderapi 的判断符号支持 = 或 !=
-# 判断条件支持使用||进行“或”判断，多个条件满足一个时即可触发
-# command type 支持 player 及 console，分别为以玩家及服务器权限执行指令
-# %player% 会被自动替换为玩家名
-# 顶层的 tick_delay 为延迟几tick后才进行判断
-# commands 中的 tick_delay 为延迟几tick后执行指令，在TPS为20时一秒可以执行20tick
-# 如果执行条件中存在多项要求，则需全部满足才会执行指令
-
-# Execution conditions support permission, placeholderapi and money
-# The money judgment symbol supports >= > = <= <
-# The placeholderapi judgment symbol supports = or !=
-# The judgment conditions support using || to perform "or" judgment, and one condition is sufficient to trigger
-# Command type supports player and console, which means executing commands with player or server permissions
-# %player% will be automatically replaced with the player's name
-# The top tick_delay is the delay in ticks before checking
-# The tick_delay in commands is the delay in ticks before executing the command, which can be executed 20 ticks per second with TPS=20
-# If there are multiple requirements in the execution conditions, they must all be satisfied before the command is executed
+# 配置说明 / Configuration Guide
+# 1. 支持的条件类型 / Supported condition types:
+#    - permission: 权限检查 / Permission check
+#    - money: 金钱检查 / Money check
+#    - placeholderapi: 占位符检查 / Placeholder check
+#
+# 2. 金钱条件支持的运算符 / Money condition operators:
+#    >= (大于等于) / >= (greater than or equal)
+#    >  (大于) / >  (greater than)
+#    =  (等于) / =  (equal)
+#    <= (小于等于) / <= (less than or equal)
+#    <  (小于) / <  (less than)
+#
+# 3. 占位符条件支持的运算符 / Placeholder condition operators:
+#    =  (等于) / =  (equal)
+#    != (不等于) / != (not equal)
+#
+# 4. 条件组合 / Condition combinations:
+#    - 使用 || 连接多个条件表示"或"关系
+#    - 多个条件之间是"与"关系，需要全部满足
+#    - Use || to connect multiple conditions for "OR" relationship
+#    - Multiple conditions are in "AND" relationship, all must be satisfied
+#
+# 5. 命令执行 / Command execution:
+#    - type: player  = 以玩家身份执行 / Execute as player
+#    - type: console = 以服务器身份执行 / Execute as server
+#    - %player% 会被自动替换为玩家名称 / %player% will be replaced with player's name
+#
+# 6. 延迟设置 / Delay settings:
+#    - 顶层 tick_delay: 延迟多少tick后开始检查条件
+#    - commands 中的 tick_delay: 延迟多少tick后执行命令
+#    - 在 TPS=20 时，1秒 = 20tick
+#    - Top-level tick_delay: Delay in ticks before checking conditions
+#    - tick_delay in commands: Delay in ticks before executing command
+#    - When TPS=20, 1 second = 20 ticks
 # Configuration file English content is translated by TONGYI Lingma
